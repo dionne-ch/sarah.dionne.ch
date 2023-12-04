@@ -197,6 +197,67 @@ a {
 .hidden {
   display: none !important;
 }
+form {
+  fieldset {
+    border: 1px solid rgba($font-color-inverted, .1);
+  }
+  .form-field {
+    position: relative;
+    margin: 10px 0;
+    input[type="date"]:not([autocomplete=on]) {
+      &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        filter: invert(0.8);
+      }
+      color: transparent;
+      &:focus, &:valid {
+        color: inherit;
+      }
+    }
+    input[type="text"], input[type="date"], input[type="password"], input[type="email"], textarea {
+      transition: border-color .2s ease-in-out;
+      appearance: none;
+      background: transparent;
+      border: 1px solid rgba($font-color-inverted, 0.2);
+      border-width: 0 0 1px 0;
+      font-size: 16px;
+      border-radius: 0px;
+      color: $font-color-inverted;
+      display: block;
+      padding: 18px 12px;
+      text-decoration: none;
+      width: 100%;
+      outline: 0px;
+      position: relative;
+      caret-color:#fff;
+      height: 0;
+      background-clip: content-box;
+      &::first-line {
+        color: $font-color-inverted;
+      }
+      ~ label {
+        transition: top .2s ease-in-out, font-size .2s ease-in-out;
+        position: absolute;
+        top: 10px;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+
+      &:focus, &:valid {
+        ~ label {
+          top: -10px;
+          font-size: 12px;
+        }
+      }
+      &:focus {
+        border-color: rgb(131, 211, 201);
+      }
+    }
+  }
+  input[type="submit"] {
+    border-width: 0;
+  }
+}
 
 /* PAGE LAYOUT */
 .wrapper {
@@ -329,9 +390,15 @@ a {
           }
         }
         p {
+          font-weight: 500;
           letter-spacing: .1em;
           margin: 0;
           text-transform: uppercase;
+          &.small {
+            //display: none;
+            font-size: 0.9em;
+            text-transform: none;
+          }
         }
         footer {
           padding: 24px 0 0 0;
@@ -512,6 +579,12 @@ a {
               background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/CPN_Lausanne_map.jpg');
               &.visible {
                 background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/CPN_Lausanne_map.jpg');
+              }
+            }
+            &.map--edenia {
+              background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Edenia_map.png');
+              &.visible {
+                background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Edenia_map.png');
               }
             }
             iframe {

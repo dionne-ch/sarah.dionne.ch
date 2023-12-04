@@ -292,6 +292,63 @@ a:hover {
   display: none !important;
 }
 
+form fieldset {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+form .form-field {
+  position: relative;
+  margin: 10px 0;
+}
+form .form-field input[type=date]:not([autocomplete=on]) {
+  color: transparent;
+}
+form .form-field input[type=date]:not([autocomplete=on])::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.8);
+}
+form .form-field input[type=date]:not([autocomplete=on]):focus, form .form-field input[type=date]:not([autocomplete=on]):valid {
+  color: inherit;
+}
+form .form-field input[type=text], form .form-field input[type=date], form .form-field input[type=password], form .form-field input[type=email], form .form-field textarea {
+  transition: border-color 0.2s ease-in-out;
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-width: 0 0 1px 0;
+  font-size: 16px;
+  border-radius: 0px;
+  color: rgba(255, 255, 255, 0.75);
+  display: block;
+  padding: 18px 12px;
+  text-decoration: none;
+  width: 100%;
+  outline: 0px;
+  position: relative;
+  caret-color: #fff;
+  height: 0;
+  background-clip: content-box;
+}
+form .form-field input[type=text]::first-line, form .form-field input[type=date]::first-line, form .form-field input[type=password]::first-line, form .form-field input[type=email]::first-line, form .form-field textarea::first-line {
+  color: rgba(255, 255, 255, 0.75);
+}
+form .form-field input[type=text] ~ label, form .form-field input[type=date] ~ label, form .form-field input[type=password] ~ label, form .form-field input[type=email] ~ label, form .form-field textarea ~ label {
+  transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
+  position: absolute;
+  top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+form .form-field input[type=text]:focus ~ label, form .form-field input[type=text]:valid ~ label, form .form-field input[type=date]:focus ~ label, form .form-field input[type=date]:valid ~ label, form .form-field input[type=password]:focus ~ label, form .form-field input[type=password]:valid ~ label, form .form-field input[type=email]:focus ~ label, form .form-field input[type=email]:valid ~ label, form .form-field textarea:focus ~ label, form .form-field textarea:valid ~ label {
+  top: -10px;
+  font-size: 12px;
+}
+form .form-field input[type=text]:focus, form .form-field input[type=date]:focus, form .form-field input[type=password]:focus, form .form-field input[type=email]:focus, form .form-field textarea:focus {
+  border-color: #83d3c9;
+}
+form input[type=submit] {
+  border-width: 0;
+}
+
 /* PAGE LAYOUT */
 .wrapper {
   transition: margin 0.3s ease-in-out;
@@ -435,9 +492,14 @@ a:hover {
   font-weight: 300;
 }
 .wrapper .content #banner .inner p {
+  font-weight: 500;
   letter-spacing: 0.1em;
   margin: 0;
   text-transform: uppercase;
+}
+.wrapper .content #banner .inner p.small {
+  font-size: 0.9em;
+  text-transform: none;
 }
 .wrapper .content #banner .inner footer {
   padding: 24px 0 0 0;
@@ -615,6 +677,12 @@ a:hover {
 }
 .wrapper .content .sections section.find-me div.map.map--cpnl.visible {
   background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/CPN_Lausanne_map.jpg");
+}
+.wrapper .content .sections section.find-me div.map.map--edenia {
+  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Edenia_map.png");
+}
+.wrapper .content .sections section.find-me div.map.map--edenia.visible {
+  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Edenia_map.png");
 }
 .wrapper .content .sections section.find-me div.map iframe {
   width: 100%;
