@@ -1,4 +1,4 @@
-const cacheName = "SD-v1.1.5",
+const cacheName = "SD-v1.1.6",
       assets = [
         '/',
         '/qr.html',
