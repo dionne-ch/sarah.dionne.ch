@@ -164,9 +164,7 @@ a {
     color: $font-color-hover;
   }
 }
-.button.primary {
-  background-color: $green;
-  color: $font-color-inverted-hover;
+.button {
   font-weight: 900;
   text-transform: uppercase;
   border-radius: .25em;
@@ -178,9 +176,17 @@ a {
   line-height: 2em;
   max-width: 100%;
   &:hover {
-    background-color: $green-lighter;
-    outline: none;
+    outline: 1px solid $font-color-inverted-hover;
     color: $font-color-inverted-hover;
+  }
+  &.primary {
+    background-color: $green;
+    color: $font-color-inverted-hover;
+    &:hover {
+      outline: none;
+      background-color: $green-lighter;
+      color: $font-color-inverted-hover;
+    }
   }
   svg.icon {
     height: 2em;
@@ -569,24 +575,6 @@ form {
             background-position: center;
             background-size: 600px 420px;
             cursor: pointer;
-            &.map--shen {
-              background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Shen_Physio_map.jpg');
-              &.visible {
-                background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Shen_Physio_map.jpg');
-              }
-            }
-            &.map--cpnl {
-              background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/CPN_Lausanne_map.jpg');
-              &.visible {
-                background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/CPN_Lausanne_map.jpg');
-              }
-            }
-            &.map--edenia {
-              background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Edenia_map.png');
-              &.visible {
-                background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Edenia_map.png');
-              }
-            }
             &.map--bulle {
               background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Bulle.png');
               &.visible {

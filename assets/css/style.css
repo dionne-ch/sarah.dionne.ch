@@ -256,9 +256,7 @@ a:hover {
   color: rgba(28, 32, 33, 0.85);
 }
 
-.button.primary {
-  background-color: #43aca0;
-  color: rgba(255, 255, 255, 0.85);
+.button {
   font-weight: 900;
   text-transform: uppercase;
   border-radius: 0.25em;
@@ -270,12 +268,20 @@ a:hover {
   line-height: 2em;
   max-width: 100%;
 }
-.button.primary:hover {
-  background-color: #61c1b6;
-  outline: none;
+.button:hover {
+  outline: 1px solid rgba(255, 255, 255, 0.85);
   color: rgba(255, 255, 255, 0.85);
 }
-.button.primary svg.icon {
+.button.primary {
+  background-color: #43aca0;
+  color: rgba(255, 255, 255, 0.85);
+}
+.button.primary:hover {
+  outline: none;
+  background-color: #61c1b6;
+  color: rgba(255, 255, 255, 0.85);
+}
+.button svg.icon {
   height: 2em;
   width: 2em;
   margin-right: 4px;
@@ -665,24 +671,6 @@ form input[type=submit] {
   background-position: center;
   background-size: 600px 420px;
   cursor: pointer;
-}
-.wrapper .content .sections section.find-me div.map.map--shen {
-  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Shen_Physio_map.jpg");
-}
-.wrapper .content .sections section.find-me div.map.map--shen.visible {
-  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Shen_Physio_map.jpg");
-}
-.wrapper .content .sections section.find-me div.map.map--cpnl {
-  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/CPN_Lausanne_map.jpg");
-}
-.wrapper .content .sections section.find-me div.map.map--cpnl.visible {
-  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/CPN_Lausanne_map.jpg");
-}
-.wrapper .content .sections section.find-me div.map.map--edenia {
-  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Edenia_map.png");
-}
-.wrapper .content .sections section.find-me div.map.map--edenia.visible {
-  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Edenia_map.png");
 }
 .wrapper .content .sections section.find-me div.map.map--bulle {
   background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Bulle.png");
