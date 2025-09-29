@@ -684,6 +684,18 @@ form input[type=submit] {
 .wrapper .content .sections section.find-me div.map.map--edenia.visible {
   background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Edenia_map.png");
 }
+.wrapper .content .sections section.find-me div.map.map--bulle {
+  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Bulle.png");
+}
+.wrapper .content .sections section.find-me div.map.map--bulle.visible {
+  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Bulle.png");
+}
+.wrapper .content .sections section.find-me div.map.map--paudex {
+  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Paudex.png");
+}
+.wrapper .content .sections section.find-me div.map.map--paudex.visible {
+  background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Paudex.png");
+}
 .wrapper .content .sections section.find-me div.map iframe {
   width: 100%;
   border: 0;
