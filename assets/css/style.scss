@@ -587,6 +587,18 @@ form {
                 background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Edenia_map.png');
               }
             }
+            &.map--bulle {
+              background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Bulle.png');
+              &.visible {
+                background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Bulle.png');
+              }
+            }
+            &.map--paudex {
+              background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Paudex.png');
+              &.visible {
+                background-image: url('https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/maps/Paudex.png');
+              }
+            }
             iframe {
               width: 100%;
               border: 0;
