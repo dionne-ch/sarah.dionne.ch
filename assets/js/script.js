@@ -1,3 +1,13 @@
+function toggleColorScheme() {
+  if (document.querySelector('html').style.getPropertyValue("color-scheme") === "" && (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.querySelector('html').style.setProperty("color-scheme", "light");
+  }else if(document.querySelector('html').style.getPropertyValue("color-scheme") === "light") {
+    document.querySelector('html').style.setProperty("color-scheme", "dark");
+  }else{
+    document.querySelector('html').style.setProperty("color-scheme", "light");
+  }
+}
+
 // Underscore throttle function
 const throttle = (func, wait, options) => {
   let timeout, context, args, result,

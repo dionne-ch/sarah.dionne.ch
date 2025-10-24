@@ -30,28 +30,16 @@
 
 :root {
   /* light mode per default */
-  --font-color: var(--dark-75);
-  --font-color-hover: var(--dark-85);
-  --background: var(--dark-05);
   --background-dark: var(--dark-95);
-  --background-odd: var(--light);
-  --shadow: var(--dark-25);
-  --icon-color: var(--purple);
-  --icon-color-hover: var(--purple-darker);
   --font-color-inverted: var(--light-75);
   --font-color-inverted-hover: var(--light-85);
-  /* Dark mode */
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --font-color: var( --font-color-inverted);
-    --font-color-hover: var( --font-color-inverted-hover);
-    --background: var(--dark-95);
-    --background-odd: var(--light-05);
-    --shadow: rgba(0, 0, 0, .5);
-    --icon-color: var(--green);
-    --icon-color-hover: var(--green-darker);
-  }
+  --font-color: light-dark(var(--dark-75), var( --font-color-inverted));
+  --font-color-hover: light-dark(var(--dark-85), var( --font-color-inverted-hover));
+  --background: light-dark(var(--dark-05), var(--dark-95));
+  --background-odd: light-dark(var(--light), var(--light-05));
+  --shadow: light-dark(var(--dark-25), rgba(0, 0, 0, .5));
+  --icon-color: light-dark(var(--purple), var(--green));
+  --icon-color-hover: light-dark(var(--purple-darker), var(--green-darker));
 }
 
 /* 4) SCSS helper to read CSS vars cleanly */
@@ -265,6 +253,7 @@
 /* Start page styling (unchanged selectors; tokenized values) */
 html {
   box-sizing: border-box;
+  color-scheme: light dark;
 }
 
 *, *:before, *:after {
