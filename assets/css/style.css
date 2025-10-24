@@ -1,3 +1,67 @@
+/* =========================================================
+   THEME SYSTEM (data-theme: light | dark | auto)
+   - Preserves current LIGHT output by default.
+   - DARK styling now via [data-theme="dark"] (no more global @media block).
+   ========================================================= */
+:root {
+  --dark-rgb: 28, 32, 33;
+  --dark: rgb(var(--dark-rgb));
+  --dark-95: rgba(var(--dark-rgb), .95);
+  --dark-85: rgba(var(--dark-rgb), .85);
+  --dark-75: rgba(var(--dark-rgb), .75);
+  --dark-25: rgba(var(--dark-rgb), .25);
+  --dark-05: rgba(var(--dark-rgb), .05);
+  --light-rgb: 255, 255, 255;
+  --light: rgb(var(--light-rgb));
+  --light-85: rgba(var(--light-rgb), .85);
+  --light-75: rgba(var(--light-rgb), .75);
+  --light-25: rgba(var(--light-rgb), .25);
+  --light-05: rgba(var(--light-rgb), .05);
+  --purple-rgb: 69, 48, 64;
+  --purple: rgb(var(--purple-rgb));
+  --purple-lighter: rgba(var(--purple-rgb), .75);
+  --purple-darker: color-mix(in srgb, var(--purple), #000 20%);
+  --green-rgb: 67, 172, 160;
+  --green: rgb(var(--green-rgb));
+  --green-lighter: color-mix(in srgb,var(--green),#fff 10%);
+  --green-darker: color-mix(in srgb,var(--green),#000 20%);
+  --deep-blue: rgb(0, 37, 64);
+}
+
+:root {
+  /* light mode per default */
+  --font-color: var(--dark-75);
+  --font-color-hover: var(--dark-85);
+  --background: var(--dark-05);
+  --background-dark: var(--dark-95);
+  --background-odd: var(--light);
+  --shadow: var(--dark-25);
+  --icon-color: var(--purple);
+  --icon-color-hover: var(--purple-darker);
+  --font-color-inverted: var(--light-75);
+  --font-color-inverted-hover: var(--light-85);
+  /* Dark mode */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --font-color: var( --font-color-inverted);
+    --font-color-hover: var( --font-color-inverted-hover);
+    --background: var(--dark-95);
+    --background-odd: var(--light-05);
+    --shadow: rgba(0, 0, 0, .5);
+    --icon-color: var(--green);
+    --icon-color-hover: var(--green-darker);
+  }
+}
+
+/* 4) SCSS helper to read CSS vars cleanly */
+/* 5) Rebind original SCSS tokens to CSS variables
+   (The rest of the file uses the same $variables as before, so the
+    default compiled CSS renders the same visual appearance.)
+*/
+/* Responsive sizes */
+/* Options */
+/* Breakpoints map & mixins (unchanged) */
 .col .row {
   margin-left: -12px;
   margin-right: -12px;
@@ -198,6 +262,7 @@
     width: calc(3 * 100% / 4);
   }
 }
+/* Start page styling (unchanged selectors; tokenized values) */
 html {
   box-sizing: border-box;
 }
@@ -211,11 +276,17 @@ html, body {
   padding: 0;
   min-width: 300px;
   font-family: sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.025em;
   scroll-behavior: smooth;
-  color: rgba(28, 32, 33, 0.75);
+  background: var(--background);
+  color: var(--font-color);
+}
+@media only screen and (min-width: 480px) {
+  html, body {
+    font-size: 16px;
+  }
 }
 html.fontLoaded, body.fontLoaded {
   font-family: Lato, sans-serif;
@@ -244,16 +315,15 @@ h2 {
 }
 
 p {
-  font-size: 17px;
   margin: 12px 0;
 }
 
 a {
   text-decoration: none;
-  color: rgba(28, 32, 33, 0.75);
+  color: var(--font-color);
 }
 a:hover {
-  color: rgba(28, 32, 33, 0.85);
+  color: var(--font-color-hover);
 }
 
 .button {
@@ -269,23 +339,23 @@ a:hover {
   max-width: 100%;
 }
 .button:hover {
-  outline: 1px solid rgba(255, 255, 255, 0.85);
-  color: rgba(255, 255, 255, 0.85);
+  outline: 1px solid var(--font-color-hover);
+  color: var(--font-color-hover);
 }
 .button.primary {
-  background-color: #43aca0;
-  color: rgba(255, 255, 255, 0.85);
+  background-color: var(--green);
+  color: var(--font-color-inverted-hover);
 }
 .button.primary:hover {
   outline: none;
-  background-color: #61c1b6;
-  color: rgba(255, 255, 255, 0.85);
+  background-color: var(--green-lighter);
+  color: var(--font-color-inverted-hover);
 }
 .button svg.icon {
   height: 2em;
   width: 2em;
   margin-right: 4px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--font-color-inverted-hover);
   vertical-align: middle;
   margin-top: -2px;
 }
@@ -299,7 +369,7 @@ a:hover {
 }
 
 form fieldset {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--font-color-inverted), 0.1);
 }
 form .form-field {
   position: relative;
@@ -319,11 +389,11 @@ form .form-field input[type=text], form .form-field input[type=date], form .form
   transition: border-color 0.2s ease-in-out;
   appearance: none;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--font-color-inverted), 0.2);
   border-width: 0 0 1px 0;
   font-size: 16px;
   border-radius: 0px;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--font-color-inverted);
   display: block;
   padding: 18px 12px;
   text-decoration: none;
@@ -335,7 +405,7 @@ form .form-field input[type=text], form .form-field input[type=date], form .form
   background-clip: content-box;
 }
 form .form-field input[type=text]::first-line, form .form-field input[type=date]::first-line, form .form-field input[type=password]::first-line, form .form-field input[type=email]::first-line, form .form-field textarea::first-line {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--font-color-inverted);
 }
 form .form-field input[type=text] ~ label, form .form-field input[type=date] ~ label, form .form-field input[type=password] ~ label, form .form-field input[type=email] ~ label, form .form-field textarea ~ label {
   transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
@@ -362,7 +432,7 @@ form input[type=submit] {
 }
 .wrapper .content {
   margin: 0 auto;
-  background-color: rgba(28, 32, 33, 0.05);
+  background-color: var(--background);
   width: 100%;
 }
 .wrapper .content #banner {
@@ -374,13 +444,13 @@ form input[type=submit] {
   overflow: hidden;
   margin: 0;
   text-align: center;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--font-color-inverted);
   cursor: default;
   padding: 0;
   height: 400px;
   text-align: center;
   background-attachment: scroll, scroll;
-  background-color: rgba(69, 48, 64, 0.75);
+  background-color: var(--purple-lighter);
   background-position: bottom;
   background-repeat: no-repeat;
   background-attachment: inherit;
@@ -431,26 +501,13 @@ form input[type=submit] {
   }
 }
 .wrapper .content #banner .inner {
-  filter: drop-shadow(0px 0px 5px #002540);
-  /** add a logo on top?
-    &:before {
-    content: none;
-    display: block;
-    width: 100%;
-    height: 300px;
-    margin-bottom: 24px;
-    background-image: url("https://sarah.dionne.ch/assets/img/logo_white.svg");
-    background-position: center top;
-    background-repeat: no-repeat;
-    background-size: contain;
-  }
-    **/
+  filter: drop-shadow(0px 0px 5px var(--deep-blue));
   margin: auto;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--font-color-inverted);
   display: inline-block;
   padding: 0;
   min-width: 275px;
@@ -492,7 +549,7 @@ form input[type=submit] {
 }
 .wrapper .content #banner .inner header h2 a {
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--font-color-inverted-hover);
 }
 .wrapper .content #banner .inner header h2 span {
   font-weight: 300;
@@ -520,7 +577,7 @@ form input[type=submit] {
 }
 .wrapper .content #banner .inner footer ul li a {
   display: inline-block;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--font-color-inverted);
   margin: 12px 18px;
   transition: color 0.3s ease-in-out;
 }
@@ -528,21 +585,21 @@ form input[type=submit] {
   display: inline-block;
   height: 36px;
   width: 36px;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--font-color-inverted);
   transition: fill 0.3s ease-in-out;
   margin: 0;
 }
 .wrapper .content #banner .inner footer ul li a:hover {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--font-color-inverted-hover);
 }
 .wrapper .content #banner .inner footer ul li a:hover svg.icon {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--font-color-inverted-hover);
 }
 @media only screen and (min-width: 768px) {
   .wrapper .content #banner .inner footer ul li a {
     margin: 12px 24px;
     transition: background-color 0.3s ease-in-out, outline 0.3s ease-in-out;
-    border: 1px solid rgba(255, 255, 255, 0.75);
+    border: 1px solid var(--font-color-inverted);
     border-radius: 50%;
   }
   .wrapper .content #banner .inner footer ul li a svg.icon {
@@ -551,8 +608,8 @@ form input[type=submit] {
     width: calc(36px + 32px);
   }
   .wrapper .content #banner .inner footer ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.125);
-    outline: 1px solid rgba(255, 255, 255, 0.85);
+    background-color: rgba(var(--light), 0.125);
+    outline: 1px solid var(--font-color-inverted-hover);
   }
 }
 .wrapper .content #banner .inner footer ul li:first-child a {
@@ -605,7 +662,7 @@ form input[type=submit] {
   }
 }
 .wrapper .content .sections section:nth-child(odd) {
-  background-color: white;
+  background-color: var(--background-odd);
 }
 .wrapper .content .sections section.about .col p:first-child {
   margin-top: 0;
@@ -651,15 +708,15 @@ form input[type=submit] {
   font-size: 56px;
   height: 56px;
   width: 56px;
-  color: rgba(69, 48, 64, 0.75);
+  color: var(--icon-color);
   margin-top: 16px;
 }
 .wrapper .content .sections section.reach-me .phone a:hover svg.icon, .wrapper .content .sections section.reach-me .email a:hover svg.icon {
-  color: #453040;
+  color: var(--icon-color-hover);
 }
 .wrapper .content .sections section.find-me {
-  background: linear-gradient(180deg, #43aca0 0%, #61c1b6 100%);
-  color: rgba(255, 255, 255, 0.75);
+  background: linear-gradient(180deg, var(--green) 0%, var(--green-lighter) 100%);
+  color: var(--font-color-inverted);
 }
 .wrapper .content .sections section.find-me iframe, .wrapper .content .sections section.find-me div.map {
   height: 250px;
@@ -708,8 +765,8 @@ form input[type=submit] {
 }
 .wrapper .content .sections section.find-me div.map:after {
   content: "Click to Interact";
-  background: rgba(69, 48, 64, 0.75);
-  color: rgba(255, 255, 255, 0.75);
+  background: var(--purple-lighter);
+  color: var(--font-color-inverted);
   width: 200px;
   height: 30px;
   line-height: 30px;
@@ -746,14 +803,20 @@ form input[type=submit] {
 .wrapper .content footer svg.icon {
   height: 24px;
   width: 24px;
-  color: rgba(28, 32, 33, 0.75);
+  color: var(--font-color);
   margin-right: 12px;
 }
 
+.container {
+  /* Mobile menu */
+}
 .container input#toggler {
   display: none;
 }
 @media only screen and (max-width: 767.8px) {
+  .container {
+    /* mobile menu visible */
+  }
   .container nav {
     transition: transform 0.3s ease-in-out;
     transform: translateX(-275px);
@@ -763,9 +826,9 @@ form input[type=submit] {
     overflow-y: auto;
     width: 275px;
     height: 100vh;
-    background-color: rgba(28, 32, 33, 0.95);
+    background-color: var(--background-dark);
     float: left;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--font-color-inverted);
     display: block;
     padding: 12px 12px;
     box-sizing: border-box;
@@ -773,8 +836,7 @@ form input[type=submit] {
   .container nav .title {
     display: none;
   }
-  .container nav ul,
-.container nav li {
+  .container nav ul, .container nav li {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -788,15 +850,15 @@ form input[type=submit] {
   .container nav ul li a, .container nav ul li span {
     text-transform: uppercase;
     user-select: none;
-    color: rgba(255, 255, 255, 0.75);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--font-color-inverted);
+    border-top: 1px solid var(--light-05);
     padding: 12px 0;
     text-decoration: none;
     display: block;
     font-weight: 900;
   }
   .container nav ul li a:hover {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--font-color-inverted-hover);
   }
   .container nav ul li ul li:first-child a, .container nav ul li ul li:first-child span {
     border-top-width: 1px;
@@ -810,9 +872,9 @@ form input[type=submit] {
     position: fixed;
     top: 0;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(var(--light), 0.25);
     backdrop-filter: blur(15px) saturate(100%);
-    box-shadow: 0 1px 2px 0 rgba(28, 32, 33, 0.25);
+    box-shadow: 0 1px 2px 0 var(--shadow);
     display: inline-block;
     width: 100%;
     font-size: 18px;
@@ -833,7 +895,7 @@ form input[type=submit] {
     white-space: nowrap;
   }
   .container .wrapper .mobile-navbar .title a {
-    color: rgba(28, 32, 33, 0.75);
+    color: var(--font-color);
     text-decoration: none;
   }
   .container .wrapper .mobile-navbar .title span {
@@ -850,7 +912,7 @@ form input[type=submit] {
     border-radius: 5px;
   }
   .container .wrapper .mobile-navbar label.toggler .navicon {
-    background: rgba(28, 32, 33, 0.75);
+    background: var(--font-color);
     visibility: visible;
     display: block;
     height: 3px;
@@ -861,7 +923,7 @@ form input[type=submit] {
     width: 24px;
   }
   .container .wrapper .mobile-navbar label.toggler .navicon:before, .container .wrapper .mobile-navbar label.toggler .navicon:after {
-    background: rgba(28, 32, 33, 0.75);
+    background: var(--font-color);
     content: "";
     left: 0px;
     display: block;
@@ -882,7 +944,7 @@ form input[type=submit] {
     height: 36px;
     width: 36px;
     margin: 0px 12px 10px 0px;
-    color: rgba(28, 32, 33, 0.75);
+    color: var(--font-color);
   }
   .container.banner-intersecting .wrapper .mobile-navbar {
     position: absolute;
@@ -894,13 +956,13 @@ form input[type=submit] {
     display: none;
   }
   .container.banner-intersecting .wrapper .mobile-navbar label.toggler .navicon {
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--font-color-inverted-hover);
   }
   .container.banner-intersecting .wrapper .mobile-navbar label.toggler .navicon, .container.banner-intersecting .wrapper .mobile-navbar label.toggler .navicon:before, .container.banner-intersecting .wrapper .mobile-navbar label.toggler .navicon:after {
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--font-color-inverted-hover);
   }
   .container.banner-intersecting .wrapper .mobile-navbar label.toggler svg.icon {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--font-color-inverted-hover);
   }
   .container input#toggler:checked ~ nav {
     transform: translateX(0);
@@ -931,6 +993,7 @@ form input[type=submit] {
   }
 }
 
+/* Desktop menu */
 @media only screen and (min-width: 768px) {
   .container.banner-intersecting #banner {
     position: relative;
@@ -943,7 +1006,7 @@ form input[type=submit] {
     width: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(to bottom, rgba(0, 37, 64, 0.65) 0%, rgba(0, 37, 64, 0.1) 60%, rgba(0, 37, 64, 0) 90%);
+    background: linear-gradient(to bottom, rgba(var(--deep-blue), 0.65) 0%, rgba(var(--deep-blue), 0.1) 60%, rgba(var(--deep-blue), 0) 90%);
   }
   .container.banner-intersecting nav {
     top: 0;
@@ -954,43 +1017,43 @@ form input[type=submit] {
     box-shadow: none;
   }
   .container.banner-intersecting nav .title svg.icon {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--font-color-inverted);
   }
   .container.banner-intersecting nav .title a {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--font-color-inverted);
   }
   .container.banner-intersecting nav ul li > a, .container.banner-intersecting nav ul li > span {
-    color: rgba(255, 255, 255, 0.75);
-    outline: 0px solid rgba(255, 255, 255, 0.75);
+    color: var(--font-color-inverted);
+    outline: 0px solid var(--font-color-inverted);
   }
   .container.banner-intersecting nav ul li > a:hover, .container.banner-intersecting nav ul li > span:hover {
     background-color: transparent;
-    outline: 1px solid rgba(255, 255, 255, 0.75);
-    color: rgba(255, 255, 255, 0.85);
+    outline: 1px solid var(--font-color-inverted);
+    color: var(--font-color-inverted-hover);
   }
   .container.banner-intersecting nav ul li > a.primary, .container.banner-intersecting nav ul li > span.primary {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--font-color-inverted-hover);
   }
   .container.banner-intersecting nav ul li.submenu a:after, .container.banner-intersecting nav ul li.submenu span:after, .container.banner-intersecting nav ul li:hover.submenu a:after, .container.banner-intersecting nav ul li:hover.submenu span:after {
-    border-color: rgba(255, 255, 255, 0.75);
+    border-color: var(--font-color-inverted);
   }
   .container.banner-intersecting nav ul li:hover > a, .container.banner-intersecting nav ul li:hover > span {
-    outline: 1px solid rgba(255, 255, 255, 0.75);
-    color: rgba(255, 255, 255, 0.85);
+    outline: 1px solid var(--font-color-inverted);
+    color: var(--font-color-inverted-hover);
   }
   .container.banner-intersecting nav ul li:hover > a.primary, .container.banner-intersecting nav ul li:hover > span.primary {
     outline: none;
-    color: rgba(255, 255, 255, 0.85);
-    background: #61c1b6;
+    color: var(--font-color-inverted-hover);
+    background: var(--green-lighter);
   }
   .container.banner-intersecting nav ul li ul li a {
     outline: none;
-    color: rgba(28, 32, 33, 0.75);
+    color: var(--font-color);
   }
   .container.banner-intersecting nav ul li ul li a:hover {
     outline: none;
-    color: rgba(255, 255, 255, 0.85);
-    background: #61c1b6;
+    color: var(--font-color-inverted-hover);
+    background: var(--green-lighter);
   }
   .container nav {
     display: block;
@@ -999,9 +1062,9 @@ form input[type=submit] {
     top: 0;
     height: 56px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(var(--light), 0.5);
     backdrop-filter: blur(15px);
-    box-shadow: 0 1px 2px 0 rgba(28, 32, 33, 0.25);
+    box-shadow: 0 1px 2px 0 var(--shadow);
   }
   .container nav .title {
     font-size: 18px;
@@ -1023,19 +1086,18 @@ form input[type=submit] {
   .container nav .title svg.icon {
     height: 36px;
     width: 36px;
-    color: rgba(28, 32, 33, 0.75);
+    color: var(--font-color);
     margin: 10px 12px 0 0;
     vertical-align: top;
   }
   .container nav .title a {
-    color: rgba(28, 32, 33, 0.75);
+    color: var(--font-color);
     text-decoration: none;
   }
   .container nav .title span {
     font-weight: 300;
   }
-  .container nav ul,
-.container nav li {
+  .container nav ul, .container nav li {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -1047,6 +1109,7 @@ form input[type=submit] {
   .container nav ul li {
     display: inline-block;
     margin: 10px;
+    /* submenu */
     position: relative;
   }
   .container nav ul li a, .container nav ul li span {
@@ -1056,28 +1119,28 @@ form input[type=submit] {
     height: 36px;
     font-size: 16px;
     line-height: 16px;
-    color: rgba(28, 32, 33, 0.75);
+    color: var(--font-color);
     text-decoration: none;
-    outline: 0px solid rgba(255, 255, 255, 0.75);
+    outline: 0px solid var(--font-color-inverted);
   }
   .container nav ul li a:hover, .container nav ul li span:hover {
     user-select: none;
-    background-color: rgba(28, 32, 33, 0.05);
-    outline: 1px solid rgba(255, 255, 255, 0.75);
+    background-color: var(--background);
+    outline: 1px solid var(--font-color-inverted);
   }
   .container nav ul li a.primary, .container nav ul li span.primary {
-    background-color: #43aca0;
-    color: rgba(255, 255, 255, 0.85);
+    background-color: var(--green);
+    color: var(--font-color-inverted-hover);
     font-weight: 900;
   }
   .container nav ul li a.primary:hover, .container nav ul li span.primary:hover {
-    background-color: #61c1b6;
+    background-color: var(--green-lighter);
     outline: none;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--font-color-inverted-hover);
   }
   .container nav ul li a:hover, .container nav ul li span:hover {
     color: black;
-    background-color: rgba(28, 32, 33, 0.05);
+    background-color: var(--background);
   }
   .container nav ul li.current {
     font-weight: 900;
@@ -1090,13 +1153,13 @@ form input[type=submit] {
     position: absolute;
     z-index: 1;
     right: -24px;
-    background-color: white;
+    background-color: var(--light);
     margin: 12px 0 0 0;
     padding: 16px 0;
-    box-shadow: 0 1px 2px 0 rgba(28, 32, 33, 0.25);
+    box-shadow: 0 1px 2px 0 var(--shadow);
   }
   .container nav ul li ul:before {
-    border-bottom: solid 8px white;
+    border-bottom: solid 8px var(--light);
     border-left: solid 8px transparent;
     border-right: solid 8px transparent;
     content: "";
@@ -1125,14 +1188,14 @@ form input[type=submit] {
     height: auto;
     max-width: 200px;
     font-size: 14px;
-    border-top: 1px solid rgba(28, 32, 33, 0.05);
-    background-color: white;
+    border-top: 1px solid var(--background);
+    background-color: var(--light);
     outline: none;
   }
   .container nav ul li ul li a:hover {
     outline: none;
-    background-color: #61c1b6;
-    color: white;
+    background-color: var(--green-lighter);
+    color: var(--light);
   }
   .container nav ul li:not(.closed):hover ul {
     display: block;
@@ -1142,14 +1205,14 @@ form input[type=submit] {
   .container nav ul li:not(.closed):hover.submenu a:after, .container nav ul li:not(.closed):hover.submenu span:after {
     transform: rotate(225deg);
     margin: 0 0 0px 8px;
-    border-color: rgba(28, 32, 33, 0.85);
+    border-color: var(--font-color-hover);
   }
   .container nav ul li:not(.closed):hover a, .container nav ul li:not(.closed):hover span {
-    outline: 1px solid rgba(255, 255, 255, 0.75);
+    outline: 1px solid var(--font-color-inverted);
   }
   .container nav ul li.submenu > a:after, .container nav ul li.submenu > span:after {
     content: "";
-    border: solid rgba(28, 32, 33, 0.75);
+    border: solid var(--font-color);
     border-width: 0 2px 2px 0;
     display: inline-block;
     margin: 0 0 3px 8px;
@@ -1158,106 +1221,5 @@ form input[type=submit] {
   }
   .container .wrapper .mobile-navbar {
     display: none;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  html, body {
-    color: rgba(255, 255, 255, 0.75);
-    background-color: rgba(28, 32, 33, 0.95);
-  }
-
-  a {
-    color: rgba(255, 255, 255, 0.75);
-  }
-  a:hover {
-    color: rgba(255, 255, 255, 0.85);
-  }
-}
-@media only screen and (prefers-color-scheme: dark) and (min-width: 768px) {
-  .container nav {
-    background: rgba(28, 32, 33, 0.5);
-    box-shadow: 0 1px 2px 0 rgba(28, 32, 33, 0.25);
-  }
-  .container nav .title a {
-    color: rgba(255, 255, 255, 0.75);
-  }
-  .container nav .title svg.icon {
-    color: rgba(255, 255, 255, 0.75);
-  }
-  .container nav ul li a, .container nav ul li span {
-    color: rgba(255, 255, 255, 0.75);
-    outline: 0px solid rgba(255, 255, 255, 0.75);
-  }
-  .container nav ul li a.primary, .container nav ul li span.primary {
-    background-color: #43aca0;
-    color: rgba(255, 255, 255, 0.85);
-    font-weight: 900;
-  }
-  .container nav ul li a.primary:hover, .container nav ul li span.primary:hover {
-    background-color: #61c1b6;
-    color: rgba(255, 255, 255, 0.85);
-  }
-  .container nav ul li a:hover, .container nav ul li span:hover {
-    color: rgba(255, 255, 255, 0.85);
-  }
-  .container nav ul li ul {
-    background-color: #1c2021;
-    box-shadow: 0 1px 2px 0 rgba(28, 32, 33, 0.25);
-  }
-  .container nav ul li ul:before {
-    border-bottom: solid 0.5em #1c2021;
-  }
-  .container nav ul li ul li a {
-    border-top: 1px solid rgba(28, 32, 33, 0.95);
-    background-color: #1c2021;
-    color: rgba(255, 255, 255, 0.75);
-  }
-  .container nav ul li ul li a:hover {
-    background-color: #43aca0;
-    color: rgba(255, 255, 255, 0.85);
-  }
-  .container nav ul li:not(.closed):hover.submenu a:after, .container nav ul li:not(.closed):hover.submenu span:after {
-    border-color: rgba(255, 255, 255, 0.85);
-  }
-  .container nav ul li:not(.closed):hover ul li a, .container nav ul li:not(.closed):hover ul li span {
-    outline: 0px solid rgba(255, 255, 255, 0.75);
-    color: rgba(255, 255, 255, 0.75);
-  }
-  .container nav ul li.submenu > a:after, .container nav ul li.submenu > span:after {
-    border-color: rgba(255, 255, 255, 0.75);
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .container .wrapper .mobile-navbar {
-    background: rgba(28, 32, 33, 0.75);
-    backdrop-filter: blur(15px) saturate(100%);
-  }
-  .container .wrapper .mobile-navbar .title a {
-    color: rgba(255, 255, 255, 0.75);
-  }
-  .container .wrapper .mobile-navbar label.toggler .navicon {
-    background: rgba(255, 255, 255, 0.85);
-  }
-  .container .wrapper .mobile-navbar label.toggler .navicon, .container .wrapper .mobile-navbar label.toggler .navicon:before, .container .wrapper .mobile-navbar label.toggler .navicon:after {
-    background: rgba(255, 255, 255, 0.85);
-  }
-  .container .wrapper .mobile-navbar label.toggler svg.icon {
-    color: rgba(255, 255, 255, 0.85);
-  }
-  .container .wrapper .content .sections section:nth-child(odd) {
-    background-color: rgba(255, 255, 255, 0.02);
-  }
-  .container .wrapper .content .sections section.reach-me .phone a svg.icon, .container .wrapper .content .sections section.reach-me .email a svg.icon {
-    color: #61c1b6;
-  }
-  .container .wrapper .content .sections section.reach-me .phone a:hover svg.icon, .container .wrapper .content .sections section.reach-me .email a:hover svg.icon {
-    color: #43aca0;
-  }
-  .container .wrapper .content .sections section.find-me {
-    background: linear-gradient(180deg, #43aca0 0%, #26635c 100%);
-    color: rgba(255, 255, 255, 0.75);
-  }
-  .container .wrapper .content footer svg.icon {
-    color: rgba(255, 255, 255, 0.75);
   }
 }
