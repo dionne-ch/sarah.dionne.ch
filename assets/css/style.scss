@@ -58,8 +58,6 @@
 /* ==================
    GRID & BREAKPOINTS
    ================== */
-$gutter: 24px;
-
 $breakpoints: (
   "xs": 360px,
   "s": 480px,
@@ -83,9 +81,21 @@ $breakpoints: (
   }
 }
 
+@mixin device-type($namespace: "") {
+  $prefix: unquote(".") + $namespace;
+
+  @for $grid-column from 2 through 4 {
+    @for $i from 1 through ($grid-column - 1) {
+      .col#{$prefix}u-#{$i}\/#{$grid-column} {
+        width: calc(#{$i} * 100% / #{$grid-column});
+      }
+    }
+  }
+}
+
 .col .row {
-  margin-left: (-1 * $gutter/ 2);
-  margin-right: (-1 * $gutter / 2);
+  margin-left: calc(-1 * var(--gutter) / 2);
+  margin-right: calc(-1 * var(--gutter) / 2);
 }
 
 .row {
@@ -106,18 +116,6 @@ $breakpoints: (
     left: auto;
     right: auto;
     width: 100%;
-  }
-}
-
-@mixin device-type($namespace: "") {
-  $prefix: unquote(".") + $namespace;
-
-  @for $grid-column from 2 through 4 {
-    @for $i from 1 through ($grid-column - 1) {
-      .col#{$prefix}u-#{$i}\/#{$grid-column} {
-        width: calc(#{$i} * 100% / #{$grid-column});
-      }
-    }
   }
 }
 
