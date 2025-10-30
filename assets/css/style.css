@@ -41,13 +41,14 @@
   --shadow: light-dark(var(--dark-25), rgba(0, 0, 0, 0.5));
   --icon-color: light-dark(var(--purple), var(--green));
   --icon-color-hover: light-dark(var(--purple-darker), var(--green-darker));
+  --font-size: 16px;
+  --font-size-mobile: 14px;
+  --gutter: 24px;
 }
 
-/* 4) SCSS helper to read CSS vars cleanly */
 /* ==================
    GRID & BREAKPOINTS
    ================== */
-/* Options */
 .col .row {
   margin-left: -12px;
   margin-right: -12px;
@@ -66,7 +67,7 @@
 .row .col {
   float: left;
   box-sizing: border-box;
-  padding: 0 12px;
+  padding: 0 var(--gutter)/2;
   min-height: 1px;
   margin-left: auto;
   left: auto;
@@ -223,7 +224,7 @@
     width: calc(3 * 100% / 4);
   }
 }
-@media only screen and (min-width: 1400px) {
+@media only screen and (min-width: 1440px) {
   .col.xxl--u-1\/2 {
     width: calc(1 * 100% / 2);
   }
@@ -268,7 +269,7 @@ body {
   padding: 0;
   min-width: 300px;
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: var(--font-size-mobile);
   font-weight: 300;
   letter-spacing: 0.025em;
   scroll-behavior: smooth;
@@ -278,7 +279,7 @@ body {
 @media only screen and (min-width: 480px) {
   html,
 body {
-    font-size: 16px;
+    font-size: var(--font-size);
   }
 }
 html.fontLoaded,
@@ -294,6 +295,76 @@ html.no-scroll body {
   position: relative;
 }
 
+body {
+  /*
+  form {
+    fieldset {
+      border: 1px solid rgba($font-color-inverted, 0.1);
+    }
+    .form-field {
+      position: relative;
+      margin: 10px 0;
+      input[type="date"]:not([autocomplete="on"]) {
+        &::-webkit-calendar-picker-indicator {
+          cursor: pointer;
+          filter: invert(0.8);
+        }
+        color: transparent;
+        &:focus,
+        &:valid {
+          color: inherit;
+        }
+      }
+      input[type="text"],
+      input[type="date"],
+      input[type="password"],
+      input[type="email"],
+      textarea {
+        transition: border-color 0.2s ease-in-out;
+        appearance: none;
+        background: transparent;
+        border: 1px solid rgba($font-color-inverted, 0.2);
+        border-width: 0 0 1px 0;
+        font-size: 16px;
+        border-radius: 0px;
+        color: $font-color-inverted;
+        display: block;
+        padding: 18px 12px;
+        text-decoration: none;
+        width: 100%;
+        outline: 0px;
+        position: relative;
+        caret-color: #fff;
+        height: 0;
+        background-clip: content-box;
+        &::first-line {
+          color: $font-color-inverted;
+        }
+        ~ label {
+          transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
+          position: absolute;
+          top: 10px;
+          margin-left: 10px;
+          cursor: pointer;
+        }
+        &:focus,
+        &:valid {
+          ~ label {
+            top: -10px;
+            font-size: 12px;
+          }
+        }
+        &:focus {
+          border-color: rgb(131, 211, 201);
+        }
+      }
+    }
+    input[type="submit"] {
+      border-width: 0;
+    }
+  }
+  */
+}
 body h1,
 body h2,
 body h3,
@@ -364,86 +435,6 @@ body .text-center {
 }
 body .hidden {
   display: none !important;
-}
-body form fieldset {
-  border: 1px solid rgba(var(--font-color-inverted), 0.1);
-}
-body form .form-field {
-  position: relative;
-  margin: 10px 0;
-}
-body form .form-field input[type=date]:not([autocomplete=on]) {
-  color: transparent;
-}
-body form .form-field input[type=date]:not([autocomplete=on])::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  filter: invert(0.8);
-}
-body form .form-field input[type=date]:not([autocomplete=on]):focus, body form .form-field input[type=date]:not([autocomplete=on]):valid {
-  color: inherit;
-}
-body form .form-field input[type=text],
-body form .form-field input[type=date],
-body form .form-field input[type=password],
-body form .form-field input[type=email],
-body form .form-field textarea {
-  transition: border-color 0.2s ease-in-out;
-  appearance: none;
-  background: transparent;
-  border: 1px solid rgba(var(--font-color-inverted), 0.2);
-  border-width: 0 0 1px 0;
-  font-size: 16px;
-  border-radius: 0px;
-  color: var(--font-color-inverted);
-  display: block;
-  padding: 18px 12px;
-  text-decoration: none;
-  width: 100%;
-  outline: 0px;
-  position: relative;
-  caret-color: #fff;
-  height: 0;
-  background-clip: content-box;
-}
-body form .form-field input[type=text]::first-line,
-body form .form-field input[type=date]::first-line,
-body form .form-field input[type=password]::first-line,
-body form .form-field input[type=email]::first-line,
-body form .form-field textarea::first-line {
-  color: var(--font-color-inverted);
-}
-body form .form-field input[type=text] ~ label,
-body form .form-field input[type=date] ~ label,
-body form .form-field input[type=password] ~ label,
-body form .form-field input[type=email] ~ label,
-body form .form-field textarea ~ label {
-  transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
-  position: absolute;
-  top: 10px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-body form .form-field input[type=text]:focus ~ label, body form .form-field input[type=text]:valid ~ label,
-body form .form-field input[type=date]:focus ~ label,
-body form .form-field input[type=date]:valid ~ label,
-body form .form-field input[type=password]:focus ~ label,
-body form .form-field input[type=password]:valid ~ label,
-body form .form-field input[type=email]:focus ~ label,
-body form .form-field input[type=email]:valid ~ label,
-body form .form-field textarea:focus ~ label,
-body form .form-field textarea:valid ~ label {
-  top: -10px;
-  font-size: 12px;
-}
-body form .form-field input[type=text]:focus,
-body form .form-field input[type=date]:focus,
-body form .form-field input[type=password]:focus,
-body form .form-field input[type=email]:focus,
-body form .form-field textarea:focus {
-  border-color: #83d3c9;
-}
-body form input[type=submit] {
-  border-width: 0;
 }
 
 /* PAGE LAYOUT */
@@ -631,7 +622,7 @@ body form input[type=submit] {
     width: calc(36px + 32px);
   }
   .wrapper .content #banner .inner footer ul li a:hover {
-    background-color: rgba(var(--light), 0.125);
+    background-color: var(--light-15);
     outline: 1px solid var(--font-color-inverted-hover);
   }
 }
@@ -681,7 +672,7 @@ body form input[type=submit] {
     max-width: 1024px;
   }
 }
-@media only screen and (min-width: 1400px) {
+@media only screen and (min-width: 1440px) {
   .wrapper .content .sections section {
     max-width: 1200px;
   }
@@ -924,7 +915,7 @@ body form input[type=submit] {
     position: fixed;
     top: 0;
     z-index: 1;
-    background: rgba(var(--light), 0.25);
+    background: var(--light-25);
     backdrop-filter: blur(15px) saturate(100%);
     box-shadow: 0 1px 2px 0 var(--shadow);
     display: inline-block;
@@ -1039,7 +1030,7 @@ body form input[type=submit] {
     width: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(to bottom, rgba(var(--deep-blue), 0.65) 0%, rgba(var(--deep-blue), 0.1) 60%, rgba(var(--deep-blue), 0) 90%);
+    background: linear-gradient(to bottom, var(--deep-blue-65) 0%, var(--deep-blue-65) 60%, var(--deep-blue-00) 90%);
   }
   .container.banner-intersecting nav {
     top: 0;
@@ -1100,7 +1091,7 @@ body form input[type=submit] {
     top: 0;
     height: 56px;
     width: 100%;
-    background-color: rgba(var(--light), 0.5);
+    background-color: var(--light-50);
     backdrop-filter: blur(15px);
     box-shadow: 0 1px 2px 0 var(--shadow);
   }
@@ -1162,13 +1153,13 @@ body form input[type=submit] {
     line-height: 16px;
     color: var(--font-color);
     text-decoration: none;
-    outline: 0px solid var(--font-color-inverted);
+    outline: 0px;
   }
   .container nav ul li a:hover,
 .container nav ul li span:hover {
     user-select: none;
-    background-color: var(--background);
-    outline: 1px solid var(--font-color-inverted);
+    color: var(--font-color-hover);
+    outline: 1px solid var(--font-color);
   }
   .container nav ul li a.toggle,
 .container nav ul li span.toggle {
@@ -1188,8 +1179,7 @@ body form input[type=submit] {
   }
   .container nav ul li a:hover,
 .container nav ul li span:hover {
-    color: black;
-    background-color: var(--background);
+    color: var(--font-color);
   }
   .container nav ul li.current {
     font-weight: 900;
@@ -1255,10 +1245,6 @@ body form input[type=submit] {
     transform: rotate(225deg);
     margin: 0 0 0px 8px;
     border-color: var(--font-color-hover);
-  }
-  .container nav ul li:not(.closed):hover a,
-.container nav ul li:not(.closed):hover span {
-    outline: 1px solid var(--font-color-inverted);
   }
   .container nav ul li.submenu > a:after,
 .container nav ul li.submenu > span:after {
