@@ -7,6 +7,7 @@
   --dark-95: rgba(var(--dark-rgb), 0.95);
   --dark-85: rgba(var(--dark-rgb), 0.85);
   --dark-75: rgba(var(--dark-rgb), 0.75);
+  --dark-50: rgba(var(--dark-rgb), 0.5);
   --dark-25: rgba(var(--dark-rgb), 0.25);
   --dark-05: rgba(var(--dark-rgb), 0.05);
 
@@ -29,6 +30,7 @@
 
   --deep-blue: rgb(0, 37, 64);
 
+  --background-light: color-mix(in srgb, var(--light), #000 5%);
   --background-dark: var(--dark-95);
   --font-color-inverted: var(--light-75);
   --font-color-inverted-hover: var(--light-85);
@@ -38,13 +40,14 @@
     var(--dark-85),
     var(--font-color-inverted-hover)
   );
-  --background: light-dark(var(--dark-05), var(--dark-95));
+  --background: light-dark(var(--background-light), var(--background-dark));
   --background-odd: light-dark(
     var(--light),
     color-mix(in srgb, var(--dark), var(--light) 5%)
   );
   --borders: light-dark(var(--dark-05), var(--light-05));
   --shadow: light-dark(var(--dark-25), rgba(0, 0, 0, 0.5));
+  --overlay: light-dark(var(--dark-25), var(--dark-50));
 
   --icon-color: light-dark(var(--purple), var(--green));
   --icon-color-hover: light-dark(var(--purple-darker), var(--green-darker));
@@ -123,6 +126,16 @@ $breakpoints: (
 @each $breakpoint, $declaration in $breakpoints {
   @include grid-media-query($breakpoint) {
     @include device-type("#{$breakpoint}--");
+
+    .inline-#{$breakpoint} {
+      display: inline !important;
+    }
+    .block-#{$breakpoint} {
+      display: block !important;
+    }
+    .hidden-#{$breakpoint} {
+      display: none !important;
+    }
   }
 }
 
@@ -206,10 +219,16 @@ body {
     &:hover {
       outline: 1px solid var(--font-color-hover);
       color: var(--font-color-hover);
+      svg.icon {
+        color: var(--font-color-hover);
+      }
     }
     &.primary {
       background-color: var(--green);
       color: var(--font-color-inverted-hover);
+      svg.icon {
+        color: var(--font-color-inverted-hover);
+      }
       &:hover {
         outline: none;
         background-color: var(--green-lighter);
@@ -220,7 +239,7 @@ body {
       height: 2em;
       width: 2em;
       margin-right: 4px;
-      color: var(--font-color-inverted-hover);
+      color: var(--font-color);
       vertical-align: middle;
       margin-top: -2px;
     }
@@ -231,10 +250,10 @@ body {
   .hidden {
     display: none !important;
   }
-  /*
+
   form {
     fieldset {
-      border: 1px solid rgba($font-color-inverted, 0.1);
+      border: 1px solid; //rgba($font-color-inverted, 0.1);
     }
     .form-field {
       position: relative;
@@ -258,11 +277,11 @@ body {
         transition: border-color 0.2s ease-in-out;
         appearance: none;
         background: transparent;
-        border: 1px solid rgba($font-color-inverted, 0.2);
+        border: 1px solid; //rgba($font-color-inverted, 0.2);
         border-width: 0 0 1px 0;
         font-size: 16px;
         border-radius: 0px;
-        color: $font-color-inverted;
+        color: var(--font-color-inverted);
         display: block;
         padding: 18px 12px;
         text-decoration: none;
@@ -273,7 +292,7 @@ body {
         height: 0;
         background-clip: content-box;
         &::first-line {
-          color: $font-color-inverted;
+          color: var(--font-color-inverted);
         }
         ~ label {
           transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
@@ -298,9 +317,37 @@ body {
       border-width: 0;
     }
   }
-  */
 }
 
+dialog {
+  max-width: 20rem;
+  padding: 2rem;
+  border: 1px solid var(--borders);
+  border-radius: 0.5rem;
+  background: var(--background);
+  box-shadow: hsl(0 0% 0% / 10%) 0 0 0.5rem 0.25rem;
+  &::backdrop {
+    background: var(--overlay);
+  }
+  &:after {
+    display: inline-block;
+    content: "×";
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    cursor: pointer;
+  }
+  ul.buttons_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+  }
+}
 /* PAGE LAYOUT */
 .wrapper {
   transition: margin 0.3s ease-in-out;
@@ -718,9 +765,10 @@ body {
       overflow-y: auto;
       width: 275px;
       height: 100vh;
-      background-color: var(--background);
+      background-color: var(--background-odd);
       float: left;
       color: var(--font-color);
+      border-right: 1px solid var(--borders);
       display: block;
       padding: 0; //12px 12px;
       box-sizing: border-box;
@@ -736,7 +784,7 @@ body {
       ul {
         //background-color: var(--background-odd);
         li {
-          font-size: 18px;
+          //font-size: 18px;
           &:first-child a {
             border-top-width: 0px;
           }
@@ -746,7 +794,8 @@ body {
             user-select: none;
             color: var(--font-color);
             border-top: 1px solid var(--borders);
-            padding: 12px;
+            padding: calc(var(--gutter) / 2) calc(var(--gutter) * 1.5)
+              calc(var(--gutter) / 2) var(--gutter);
             text-decoration: none;
             display: block;
             font-weight: 900;
@@ -761,7 +810,7 @@ body {
             }
             a,
             span {
-              padding-left: 12px;
+              padding-left: calc(var(--gutter) * 2);
               font-weight: 300;
             }
           }
@@ -1193,6 +1242,7 @@ body {
   *:after {
     font-size: 12px;
   }
+
   position: relative;
   box-sizing: border-box;
 

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* ================
    COLORS AND SIZES
    ================ */
@@ -7,6 +8,7 @@
   --dark-95: rgba(var(--dark-rgb), 0.95);
   --dark-85: rgba(var(--dark-rgb), 0.85);
   --dark-75: rgba(var(--dark-rgb), 0.75);
+  --dark-50: rgba(var(--dark-rgb), 0.5);
   --dark-25: rgba(var(--dark-rgb), 0.25);
   --dark-05: rgba(var(--dark-rgb), 0.05);
   --light-rgb: 255, 255, 255;
@@ -24,6 +26,7 @@
   --green-lighter: color-mix(in srgb, var(--green), #fff 10%);
   --green-darker: color-mix(in srgb, var(--green), #000 20%);
   --deep-blue: rgb(0, 37, 64);
+  --background-light: color-mix(in srgb, var(--light), #000 5%);
   --background-dark: var(--dark-95);
   --font-color-inverted: var(--light-75);
   --font-color-inverted-hover: var(--light-85);
@@ -32,13 +35,14 @@
     var(--dark-85),
     var(--font-color-inverted-hover)
   );
-  --background: light-dark(var(--dark-05), var(--dark-95));
+  --background: light-dark(var(--background-light), var(--background-dark));
   --background-odd: light-dark(
     var(--light),
     color-mix(in srgb, var(--dark), var(--light) 5%)
   );
   --borders: light-dark(var(--dark-05), var(--light-05));
   --shadow: light-dark(var(--dark-25), rgba(0, 0, 0, 0.5));
+  --overlay: light-dark(var(--dark-25), var(--dark-50));
   --icon-color: light-dark(var(--purple), var(--green));
   --icon-color-hover: light-dark(var(--purple-darker), var(--green-darker));
   --font-size: 16px;
@@ -123,6 +127,18 @@
   .col.xs--u-3\/4 {
     width: calc(3 * 100% / 4);
   }
+
+  .inline-xs {
+    display: inline !important;
+  }
+
+  .block-xs {
+    display: block !important;
+  }
+
+  .hidden-xs {
+    display: none !important;
+  }
 }
 @media only screen and (min-width: 480px) {
   .col.s--u-1\/2 {
@@ -147,6 +163,18 @@
 
   .col.s--u-3\/4 {
     width: calc(3 * 100% / 4);
+  }
+
+  .inline-s {
+    display: inline !important;
+  }
+
+  .block-s {
+    display: block !important;
+  }
+
+  .hidden-s {
+    display: none !important;
   }
 }
 @media only screen and (min-width: 768px) {
@@ -173,6 +201,18 @@
   .col.m--u-3\/4 {
     width: calc(3 * 100% / 4);
   }
+
+  .inline-m {
+    display: inline !important;
+  }
+
+  .block-m {
+    display: block !important;
+  }
+
+  .hidden-m {
+    display: none !important;
+  }
 }
 @media only screen and (min-width: 992px) {
   .col.l--u-1\/2 {
@@ -197,6 +237,18 @@
 
   .col.l--u-3\/4 {
     width: calc(3 * 100% / 4);
+  }
+
+  .inline-l {
+    display: inline !important;
+  }
+
+  .block-l {
+    display: block !important;
+  }
+
+  .hidden-l {
+    display: none !important;
   }
 }
 @media only screen and (min-width: 1200px) {
@@ -223,6 +275,18 @@
   .col.xl--u-3\/4 {
     width: calc(3 * 100% / 4);
   }
+
+  .inline-xl {
+    display: inline !important;
+  }
+
+  .block-xl {
+    display: block !important;
+  }
+
+  .hidden-xl {
+    display: none !important;
+  }
 }
 @media only screen and (min-width: 1440px) {
   .col.xxl--u-1\/2 {
@@ -247,6 +311,18 @@
 
   .col.xxl--u-3\/4 {
     width: calc(3 * 100% / 4);
+  }
+
+  .inline-xxl {
+    display: inline !important;
+  }
+
+  .block-xxl {
+    display: block !important;
+  }
+
+  .hidden-xxl {
+    display: none !important;
   }
 }
 /* ============
@@ -295,76 +371,6 @@ html.no-scroll body {
   position: relative;
 }
 
-body {
-  /*
-  form {
-    fieldset {
-      border: 1px solid rgba($font-color-inverted, 0.1);
-    }
-    .form-field {
-      position: relative;
-      margin: 10px 0;
-      input[type="date"]:not([autocomplete="on"]) {
-        &::-webkit-calendar-picker-indicator {
-          cursor: pointer;
-          filter: invert(0.8);
-        }
-        color: transparent;
-        &:focus,
-        &:valid {
-          color: inherit;
-        }
-      }
-      input[type="text"],
-      input[type="date"],
-      input[type="password"],
-      input[type="email"],
-      textarea {
-        transition: border-color 0.2s ease-in-out;
-        appearance: none;
-        background: transparent;
-        border: 1px solid rgba($font-color-inverted, 0.2);
-        border-width: 0 0 1px 0;
-        font-size: 16px;
-        border-radius: 0px;
-        color: $font-color-inverted;
-        display: block;
-        padding: 18px 12px;
-        text-decoration: none;
-        width: 100%;
-        outline: 0px;
-        position: relative;
-        caret-color: #fff;
-        height: 0;
-        background-clip: content-box;
-        &::first-line {
-          color: $font-color-inverted;
-        }
-        ~ label {
-          transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
-          position: absolute;
-          top: 10px;
-          margin-left: 10px;
-          cursor: pointer;
-        }
-        &:focus,
-        &:valid {
-          ~ label {
-            top: -10px;
-            font-size: 12px;
-          }
-        }
-        &:focus {
-          border-color: rgb(131, 211, 201);
-        }
-      }
-    }
-    input[type="submit"] {
-      border-width: 0;
-    }
-  }
-  */
-}
 body h1,
 body h2,
 body h3,
@@ -413,8 +419,14 @@ body .button:hover {
   outline: 1px solid var(--font-color-hover);
   color: var(--font-color-hover);
 }
+body .button:hover svg.icon {
+  color: var(--font-color-hover);
+}
 body .button.primary {
   background-color: var(--green);
+  color: var(--font-color-inverted-hover);
+}
+body .button.primary svg.icon {
   color: var(--font-color-inverted-hover);
 }
 body .button.primary:hover {
@@ -426,7 +438,7 @@ body .button svg.icon {
   height: 2em;
   width: 2em;
   margin-right: 4px;
-  color: var(--font-color-inverted-hover);
+  color: var(--font-color);
   vertical-align: middle;
   margin-top: -2px;
 }
@@ -435,6 +447,116 @@ body .text-center {
 }
 body .hidden {
   display: none !important;
+}
+body form fieldset {
+  border: 1px solid;
+}
+body form .form-field {
+  position: relative;
+  margin: 10px 0;
+}
+body form .form-field input[type=date]:not([autocomplete=on]) {
+  color: transparent;
+}
+body form .form-field input[type=date]:not([autocomplete=on])::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.8);
+}
+body form .form-field input[type=date]:not([autocomplete=on]):focus, body form .form-field input[type=date]:not([autocomplete=on]):valid {
+  color: inherit;
+}
+body form .form-field input[type=text],
+body form .form-field input[type=date],
+body form .form-field input[type=password],
+body form .form-field input[type=email],
+body form .form-field textarea {
+  transition: border-color 0.2s ease-in-out;
+  appearance: none;
+  background: transparent;
+  border: 1px solid;
+  border-width: 0 0 1px 0;
+  font-size: 16px;
+  border-radius: 0px;
+  color: var(--font-color-inverted);
+  display: block;
+  padding: 18px 12px;
+  text-decoration: none;
+  width: 100%;
+  outline: 0px;
+  position: relative;
+  caret-color: #fff;
+  height: 0;
+  background-clip: content-box;
+}
+body form .form-field input[type=text]::first-line,
+body form .form-field input[type=date]::first-line,
+body form .form-field input[type=password]::first-line,
+body form .form-field input[type=email]::first-line,
+body form .form-field textarea::first-line {
+  color: var(--font-color-inverted);
+}
+body form .form-field input[type=text] ~ label,
+body form .form-field input[type=date] ~ label,
+body form .form-field input[type=password] ~ label,
+body form .form-field input[type=email] ~ label,
+body form .form-field textarea ~ label {
+  transition: top 0.2s ease-in-out, font-size 0.2s ease-in-out;
+  position: absolute;
+  top: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+body form .form-field input[type=text]:focus ~ label, body form .form-field input[type=text]:valid ~ label,
+body form .form-field input[type=date]:focus ~ label,
+body form .form-field input[type=date]:valid ~ label,
+body form .form-field input[type=password]:focus ~ label,
+body form .form-field input[type=password]:valid ~ label,
+body form .form-field input[type=email]:focus ~ label,
+body form .form-field input[type=email]:valid ~ label,
+body form .form-field textarea:focus ~ label,
+body form .form-field textarea:valid ~ label {
+  top: -10px;
+  font-size: 12px;
+}
+body form .form-field input[type=text]:focus,
+body form .form-field input[type=date]:focus,
+body form .form-field input[type=password]:focus,
+body form .form-field input[type=email]:focus,
+body form .form-field textarea:focus {
+  border-color: #83d3c9;
+}
+body form input[type=submit] {
+  border-width: 0;
+}
+
+dialog {
+  max-width: 20rem;
+  padding: 2rem;
+  border: 1px solid var(--borders);
+  border-radius: 0.5rem;
+  background: var(--background);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 0.5rem 0.25rem;
+}
+dialog::backdrop {
+  background: var(--overlay);
+}
+dialog:after {
+  display: inline-block;
+  content: "×";
+  position: absolute;
+  top: 12px;
+  right: 24px;
+  cursor: pointer;
+}
+dialog ul.buttons_list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+dialog ul.buttons_list li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 /* PAGE LAYOUT */
@@ -848,9 +970,10 @@ body .hidden {
     overflow-y: auto;
     width: 275px;
     height: 100vh;
-    background-color: var(--background);
+    background-color: var(--background-odd);
     float: left;
     color: var(--font-color);
+    border-right: 1px solid var(--borders);
     display: block;
     padding: 0;
     box-sizing: border-box;
@@ -864,9 +987,6 @@ body .hidden {
     padding: 0;
     list-style: none;
   }
-  .container nav ul li {
-    font-size: 18px;
-  }
   .container nav ul li:first-child a {
     border-top-width: 0px;
   }
@@ -876,7 +996,7 @@ body .hidden {
     user-select: none;
     color: var(--font-color);
     border-top: 1px solid var(--borders);
-    padding: 12px;
+    padding: calc(var(--gutter) / 2) calc(var(--gutter) * 1.5) calc(var(--gutter) / 2) var(--gutter);
     text-decoration: none;
     display: block;
     font-weight: 900;
@@ -889,7 +1009,7 @@ body .hidden {
   }
   .container nav ul li ul li a,
 .container nav ul li ul li span {
-    padding-left: 12px;
+    padding-left: calc(var(--gutter) * 2);
     font-weight: 300;
   }
   .container.banner-intersecting .wrapper .mobile-navbar {
