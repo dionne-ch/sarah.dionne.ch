@@ -9,6 +9,7 @@
   --dark-75: rgba(var(--dark-rgb), 0.75);
   --dark-50: rgba(var(--dark-rgb), 0.5);
   --dark-25: rgba(var(--dark-rgb), 0.25);
+  --dark-15: rgba(var(--dark-rgb), 0.15);
   --dark-05: rgba(var(--dark-rgb), 0.05);
 
   --light-rgb: 255, 255, 255;
@@ -16,6 +17,7 @@
   --light-85: rgba(var(--light-rgb), 0.85);
   --light-75: rgba(var(--light-rgb), 0.75);
   --light-25: rgba(var(--light-rgb), 0.25);
+  --light-15: rgba(var(--light-rgb), 0.15);
   --light-05: rgba(var(--light-rgb), 0.05);
 
   --purple-rgb: 69, 48, 64;
@@ -28,7 +30,8 @@
   --green-lighter: color-mix(in srgb, var(--green), #fff 10%);
   --green-darker: color-mix(in srgb, var(--green), #000 20%);
 
-  --deep-blue: rgb(0, 37, 64);
+  --deep-blue-rgb: 0, 37, 64;
+  --deep-blue: rgb(var(--deep-blue-rgb));
 
   --background-light: color-mix(in srgb, var(--light), #000 5%);
   --background-dark: var(--dark-95);
@@ -45,7 +48,7 @@
     var(--light),
     color-mix(in srgb, var(--dark), var(--light) 5%)
   );
-  --borders: light-dark(var(--dark-05), var(--light-05));
+  --borders: light-dark(var(--dark-15), var(--light-15));
   --shadow: light-dark(var(--dark-25), rgba(0, 0, 0, 0.5));
   --overlay: light-dark(var(--dark-25), var(--dark-50));
 
@@ -53,7 +56,7 @@
   --icon-color-hover: light-dark(var(--purple-darker), var(--green-darker));
 
   --font-size: 16px;
-  --font-size-mobile: 14px;
+  --font-size-mobile: calc(var(--font-size) * 0.95);
 
   --gutter: 24px;
 }
@@ -100,7 +103,6 @@ $breakpoints: (
   margin-left: calc(-1 * var(--gutter) / 2);
   margin-right: calc(-1 * var(--gutter) / 2);
 }
-
 .row {
   margin-left: auto;
   margin-right: auto;
@@ -145,6 +147,14 @@ $breakpoints: (
 html {
   box-sizing: border-box;
   color-scheme: light dark;
+  body.black-banner:before {
+    content: "";
+    display: inline-block;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    background: black;
+  }
 }
 *,
 *:before,
@@ -170,13 +180,33 @@ body {
     font-family: Lato, sans-serif;
   }
 }
+
+/* Overlay when mobile nav is open */
 html.no-scroll {
   overflow-y: hidden;
   body {
     overflow: hidden;
     position: relative;
+
+    .content,
+    .mobile-navbar {
+      position: relative;
+      &:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--overlay);
+        backdrop-filter: blur(2px);
+      }
+    }
   }
 }
+
+/* Common styling */
 body {
   h1,
   h2,
@@ -193,7 +223,7 @@ body {
     }
   }
   h2 {
-    font-size: 26px;
+    font-size: 1.7em;
   }
   p {
     margin: 12px 0;
@@ -203,6 +233,17 @@ body {
     color: var(--font-color);
     &:hover {
       color: var(--font-color-hover);
+    }
+  }
+
+  ul.buttons_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
     }
   }
   .button {
@@ -279,7 +320,7 @@ body {
         background: transparent;
         border: 1px solid; //rgba($font-color-inverted, 0.2);
         border-width: 0 0 1px 0;
-        font-size: 16px;
+        font-size: 1em;
         border-radius: 0px;
         color: var(--font-color-inverted);
         display: block;
@@ -305,7 +346,7 @@ body {
         &:valid {
           ~ label {
             top: -10px;
-            font-size: 12px;
+            font-size: 0.95em;
           }
         }
         &:focus {
@@ -317,37 +358,28 @@ body {
       border-width: 0;
     }
   }
-}
 
-dialog {
-  max-width: 20rem;
-  padding: 2rem;
-  border: 1px solid var(--borders);
-  border-radius: 0.5rem;
-  background: var(--background);
-  box-shadow: hsl(0 0% 0% / 10%) 0 0 0.5rem 0.25rem;
-  &::backdrop {
-    background: var(--overlay);
-  }
-  &:after {
-    display: inline-block;
-    content: "×";
-    position: absolute;
-    top: 12px;
-    right: 24px;
-    cursor: pointer;
-  }
-  ul.buttons_list {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    li {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
+  dialog {
+    max-width: 20em;
+    padding: 2em;
+    border: 1px solid var(--borders);
+    border-radius: 0.5em;
+    background: var(--background);
+    box-shadow: hsl(0 0% 0% / 10%) 0 0 0.5em 0.25em;
+    &::backdrop {
+      background: var(--overlay);
+    }
+    &:after {
+      display: inline-block;
+      content: "×";
+      position: absolute;
+      top: 12px;
+      right: 24px;
+      cursor: pointer;
     }
   }
 }
+
 /* PAGE LAYOUT */
 .wrapper {
   transition: margin 0.3s ease-in-out;
@@ -653,7 +685,7 @@ dialog {
             width: 80%;
             margin: auto;
             background-position: center;
-            background-size: 600px 420px;
+            background-size: 720px 405px;
             cursor: pointer;
             &.map--bulle {
               background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/maps/Bulle.png");
@@ -770,7 +802,7 @@ dialog {
       color: var(--font-color);
       border-right: 1px solid var(--borders);
       display: block;
-      padding: 0; //12px 12px;
+      padding: 0;
       box-sizing: border-box;
       .title {
         display: none;
@@ -781,37 +813,63 @@ dialog {
         padding: 0;
         list-style: none;
       }
-      ul {
-        //background-color: var(--background-odd);
-        li {
-          //font-size: 18px;
-          &:first-child a {
-            border-top-width: 0px;
-          }
+      & > ul {
+        margin-top: var(--gutter);
+        & > li {
+          font-size: 1.2em;
           a,
           span {
+            position: relative;
             text-transform: uppercase;
             user-select: none;
             color: var(--font-color);
-            border-top: 1px solid var(--borders);
             padding: calc(var(--gutter) / 2) calc(var(--gutter) * 1.5)
               calc(var(--gutter) / 2) var(--gutter);
             text-decoration: none;
             display: block;
             font-weight: 900;
+
+            &:before {
+              content: "";
+              position: absolute;
+              left: 12px;
+              top: 0;
+              height: 1px;
+              width: calc(100% - 36px);
+              border-top: 1px solid var(--borders);
+            }
+          }
+          &:first-child {
+            & > a,
+            & > span {
+              &:before {
+                border-top-width: 0px;
+              }
+            }
           }
           a:hover {
             color: var(--font-color-hover);
           }
           ul li {
-            &:first-child a,
-            &:first-child span {
-              border-top-width: 1px;
-            }
+            font-size: 0.9em;
             a,
             span {
               padding-left: calc(var(--gutter) * 2);
               font-weight: 300;
+              &:before {
+                left: 36px;
+                width: calc(100% - 60px);
+              }
+            }
+            ul li {
+              a,
+              span {
+                padding-left: calc(var(--gutter) * 3);
+                &:before {
+                  left: 60px;
+                  width: calc(100% - 84px);
+                }
+              }
             }
           }
         }
@@ -855,7 +913,7 @@ dialog {
       box-shadow: 0 1px 2px 0 var(--shadow);
       display: inline-block;
       width: 100%;
-      font-size: 18px;
+      font-size: 1.2em;
       line-height: 56px;
       .title {
         float: right;
@@ -964,6 +1022,7 @@ dialog {
 /* Desktop menu */
 @include grid-media-query(m) {
   .container {
+    // ON TOP OF PAGE
     &.banner-intersecting {
       #banner {
         position: relative;
@@ -977,9 +1036,9 @@ dialog {
           left: 0;
           background: linear-gradient(
             to bottom,
-            var(--deep-blue-65) 0%,
-            var(--deep-blue-65) 60%,
-            var(--deep-blue-00) 90%
+            rgba(var(--deep-blue-rgb), 0.65) 0%,
+            rgba(var(--deep-blue-rgb), 0.1) 60%,
+            transparent 90%
           );
         }
       }
@@ -996,8 +1055,8 @@ dialog {
         .title a {
           color: var(--font-color-inverted);
         }
-        ul {
-          li {
+        > ul {
+          > li {
             > a,
             > span {
               color: var(--font-color-inverted);
@@ -1055,7 +1114,7 @@ dialog {
       backdrop-filter: blur(15px);
       box-shadow: 0 1px 2px 0 var(--shadow);
       .title {
-        font-size: 18px;
+        font-size: 1.2em;
         line-height: 56px;
         display: block;
         text-transform: uppercase;
@@ -1093,10 +1152,10 @@ dialog {
         padding: 0;
         list-style: none;
       }
-      ul {
+      & > ul {
         text-align: right;
         margin-right: 36px;
-        li {
+        & > li {
           display: inline-block;
           margin: 10px;
           a,
@@ -1110,8 +1169,8 @@ dialog {
             display: inline-block;
             padding: 10px 16px;
             height: 36px;
-            font-size: 16px;
-            line-height: 16px;
+            font-size: 1em;
+            line-height: 1em;
             color: var(--font-color);
             text-decoration: none;
             outline: 0px;
@@ -1140,20 +1199,20 @@ dialog {
 
           /* submenu */
           position: relative;
-          ul {
+          & > ul {
             transition: opacity 0.3s ease-in-out;
             transform: scale(0);
-            display: block;
             opacity: 0;
+            display: block;
             position: absolute;
             z-index: 1;
             right: -24px;
-            background-color: var(--light);
+            background-color: var(--background);
             margin: 12px 0 0 0;
             padding: 16px 0;
             box-shadow: 0 1px 2px 0 var(--shadow);
             &:before {
-              border-bottom: solid 8px var(--light);
+              border-bottom: solid 8px var(--background);
               border-left: solid 8px transparent;
               border-right: solid 8px transparent;
               content: "";
@@ -1163,11 +1222,13 @@ dialog {
             }
             &:after {
               content: "";
-              width: 100%;
+              width: 150%;
               position: absolute;
-              height: 20px;
+              height: 125%;
               top: -18px;
-              left: 0;
+              left: -25%;
+              //background: aqua;
+              z-index: -10;
             }
 
             li {
@@ -1181,9 +1242,9 @@ dialog {
                 width: 100%;
                 height: auto;
                 max-width: 200px;
-                font-size: 14px;
+                font-size: 0.95em;
                 border-top: 1px solid var(--background);
-                background-color: var(--light);
+                //background-color: var(--light);
                 outline: none;
                 &:hover {
                   outline: none;
@@ -1204,7 +1265,7 @@ dialog {
             &.submenu span:after {
               transform: rotate(225deg);
               margin: 0 0 0px 8px;
-              border-color: var(--font-color-hover);
+              //border-color: var(--font-color-hover);
             }
             a,
             span {
@@ -1240,13 +1301,14 @@ dialog {
   *,
   *:before,
   *:after {
-    font-size: 12px;
+    font-size: 0.9em;
   }
 
   position: relative;
   box-sizing: border-box;
 
   input[type="checkbox"] {
+    margin: 0;
     position: absolute;
     left: 0;
     top: 0;

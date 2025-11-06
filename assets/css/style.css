@@ -10,12 +10,14 @@
   --dark-75: rgba(var(--dark-rgb), 0.75);
   --dark-50: rgba(var(--dark-rgb), 0.5);
   --dark-25: rgba(var(--dark-rgb), 0.25);
+  --dark-15: rgba(var(--dark-rgb), 0.15);
   --dark-05: rgba(var(--dark-rgb), 0.05);
   --light-rgb: 255, 255, 255;
   --light: rgb(var(--light-rgb));
   --light-85: rgba(var(--light-rgb), 0.85);
   --light-75: rgba(var(--light-rgb), 0.75);
   --light-25: rgba(var(--light-rgb), 0.25);
+  --light-15: rgba(var(--light-rgb), 0.15);
   --light-05: rgba(var(--light-rgb), 0.05);
   --purple-rgb: 69, 48, 64;
   --purple: rgb(var(--purple-rgb));
@@ -25,7 +27,8 @@
   --green: rgb(var(--green-rgb));
   --green-lighter: color-mix(in srgb, var(--green), #fff 10%);
   --green-darker: color-mix(in srgb, var(--green), #000 20%);
-  --deep-blue: rgb(0, 37, 64);
+  --deep-blue-rgb: 0, 37, 64;
+  --deep-blue: rgb(var(--deep-blue-rgb));
   --background-light: color-mix(in srgb, var(--light), #000 5%);
   --background-dark: var(--dark-95);
   --font-color-inverted: var(--light-75);
@@ -40,13 +43,13 @@
     var(--light),
     color-mix(in srgb, var(--dark), var(--light) 5%)
   );
-  --borders: light-dark(var(--dark-05), var(--light-05));
+  --borders: light-dark(var(--dark-15), var(--light-15));
   --shadow: light-dark(var(--dark-25), rgba(0, 0, 0, 0.5));
   --overlay: light-dark(var(--dark-25), var(--dark-50));
   --icon-color: light-dark(var(--purple), var(--green));
   --icon-color-hover: light-dark(var(--purple-darker), var(--green-darker));
   --font-size: 16px;
-  --font-size-mobile: 14px;
+  --font-size-mobile: calc(var(--font-size) * 0.95);
   --gutter: 24px;
 }
 
@@ -332,6 +335,14 @@ html {
   box-sizing: border-box;
   color-scheme: light dark;
 }
+html body.black-banner:before {
+  content: "";
+  display: inline-block;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: black;
+}
 
 *,
 *:before,
@@ -363,6 +374,7 @@ body.fontLoaded {
   font-family: Lato, sans-serif;
 }
 
+/* Overlay when mobile nav is open */
 html.no-scroll {
   overflow-y: hidden;
 }
@@ -370,7 +382,24 @@ html.no-scroll body {
   overflow: hidden;
   position: relative;
 }
+html.no-scroll body .content,
+html.no-scroll body .mobile-navbar {
+  position: relative;
+}
+html.no-scroll body .content:after,
+html.no-scroll body .mobile-navbar:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--overlay);
+  backdrop-filter: blur(2px);
+}
 
+/* Common styling */
 body h1,
 body h2,
 body h3,
@@ -391,7 +420,7 @@ body h6 span {
   font-weight: 900;
 }
 body h2 {
-  font-size: 26px;
+  font-size: 1.7em;
 }
 body p {
   margin: 12px 0;
@@ -402,6 +431,16 @@ body a {
 }
 body a:hover {
   color: var(--font-color-hover);
+}
+body ul.buttons_list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+body ul.buttons_list li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 body .button {
   font-weight: 900;
@@ -475,7 +514,7 @@ body form .form-field textarea {
   background: transparent;
   border: 1px solid;
   border-width: 0 0 1px 0;
-  font-size: 16px;
+  font-size: 1em;
   border-radius: 0px;
   color: var(--font-color-inverted);
   display: block;
@@ -516,7 +555,7 @@ body form .form-field input[type=email]:valid ~ label,
 body form .form-field textarea:focus ~ label,
 body form .form-field textarea:valid ~ label {
   top: -10px;
-  font-size: 12px;
+  font-size: 0.95em;
 }
 body form .form-field input[type=text]:focus,
 body form .form-field input[type=date]:focus,
@@ -528,35 +567,24 @@ body form .form-field textarea:focus {
 body form input[type=submit] {
   border-width: 0;
 }
-
-dialog {
-  max-width: 20rem;
-  padding: 2rem;
+body dialog {
+  max-width: 20em;
+  padding: 2em;
   border: 1px solid var(--borders);
-  border-radius: 0.5rem;
+  border-radius: 0.5em;
   background: var(--background);
-  box-shadow: rgba(0, 0, 0, 0.1) 0 0 0.5rem 0.25rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 0.5em 0.25em;
 }
-dialog::backdrop {
+body dialog::backdrop {
   background: var(--overlay);
 }
-dialog:after {
+body dialog:after {
   display: inline-block;
   content: "×";
   position: absolute;
   top: 12px;
   right: 24px;
   cursor: pointer;
-}
-dialog ul.buttons_list {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-dialog ul.buttons_list li {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
 }
 
 /* PAGE LAYOUT */
@@ -867,7 +895,7 @@ dialog ul.buttons_list li {
   width: 80%;
   margin: auto;
   background-position: center;
-  background-size: 600px 420px;
+  background-size: 720px 405px;
   cursor: pointer;
 }
 .wrapper .content .sections section.find-me div.map.map--bulle {
@@ -987,30 +1015,60 @@ dialog ul.buttons_list li {
     padding: 0;
     list-style: none;
   }
-  .container nav ul li:first-child a {
-    border-top-width: 0px;
+  .container nav > ul {
+    margin-top: var(--gutter);
   }
-  .container nav ul li a,
-.container nav ul li span {
+  .container nav > ul > li {
+    font-size: 1.2em;
+  }
+  .container nav > ul > li a,
+.container nav > ul > li span {
+    position: relative;
     text-transform: uppercase;
     user-select: none;
     color: var(--font-color);
-    border-top: 1px solid var(--borders);
     padding: calc(var(--gutter) / 2) calc(var(--gutter) * 1.5) calc(var(--gutter) / 2) var(--gutter);
     text-decoration: none;
     display: block;
     font-weight: 900;
   }
-  .container nav ul li a:hover {
+  .container nav > ul > li a:before,
+.container nav > ul > li span:before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 0;
+    height: 1px;
+    width: calc(100% - 36px);
+    border-top: 1px solid var(--borders);
+  }
+  .container nav > ul > li:first-child > a:before, .container nav > ul > li:first-child > span:before {
+    border-top-width: 0px;
+  }
+  .container nav > ul > li a:hover {
     color: var(--font-color-hover);
   }
-  .container nav ul li ul li:first-child a, .container nav ul li ul li:first-child span {
-    border-top-width: 1px;
+  .container nav > ul > li ul li {
+    font-size: 0.9em;
   }
-  .container nav ul li ul li a,
-.container nav ul li ul li span {
+  .container nav > ul > li ul li a,
+.container nav > ul > li ul li span {
     padding-left: calc(var(--gutter) * 2);
     font-weight: 300;
+  }
+  .container nav > ul > li ul li a:before,
+.container nav > ul > li ul li span:before {
+    left: 36px;
+    width: calc(100% - 60px);
+  }
+  .container nav > ul > li ul li ul li a,
+.container nav > ul > li ul li ul li span {
+    padding-left: calc(var(--gutter) * 3);
+  }
+  .container nav > ul > li ul li ul li a:before,
+.container nav > ul > li ul li ul li span:before {
+    left: 60px;
+    width: calc(100% - 84px);
   }
   .container.banner-intersecting .wrapper .mobile-navbar {
     position: absolute;
@@ -1040,7 +1098,7 @@ dialog ul.buttons_list li {
     box-shadow: 0 1px 2px 0 var(--shadow);
     display: inline-block;
     width: 100%;
-    font-size: 18px;
+    font-size: 1.2em;
     line-height: 56px;
   }
   .container .wrapper .mobile-navbar .title {
@@ -1150,7 +1208,7 @@ dialog ul.buttons_list li {
     width: 100%;
     top: 0;
     left: 0;
-    background: linear-gradient(to bottom, var(--deep-blue-65) 0%, var(--deep-blue-65) 60%, var(--deep-blue-00) 90%);
+    background: linear-gradient(to bottom, rgba(var(--deep-blue-rgb), 0.65) 0%, rgba(var(--deep-blue-rgb), 0.1) 60%, transparent 90%);
   }
   .container.banner-intersecting nav {
     top: 0;
@@ -1166,40 +1224,40 @@ dialog ul.buttons_list li {
   .container.banner-intersecting nav .title a {
     color: var(--font-color-inverted);
   }
-  .container.banner-intersecting nav ul li > a,
-.container.banner-intersecting nav ul li > span {
+  .container.banner-intersecting nav > ul > li > a,
+.container.banner-intersecting nav > ul > li > span {
     color: var(--font-color-inverted);
     outline: 0px solid var(--font-color-inverted);
   }
-  .container.banner-intersecting nav ul li > a:hover,
-.container.banner-intersecting nav ul li > span:hover {
+  .container.banner-intersecting nav > ul > li > a:hover,
+.container.banner-intersecting nav > ul > li > span:hover {
     background-color: transparent;
     outline: 1px solid var(--font-color-inverted);
     color: var(--font-color-inverted-hover);
   }
-  .container.banner-intersecting nav ul li > a.primary,
-.container.banner-intersecting nav ul li > span.primary {
+  .container.banner-intersecting nav > ul > li > a.primary,
+.container.banner-intersecting nav > ul > li > span.primary {
     color: var(--font-color-inverted-hover);
   }
-  .container.banner-intersecting nav ul li.submenu a:after, .container.banner-intersecting nav ul li.submenu span:after, .container.banner-intersecting nav ul li:hover.submenu a:after, .container.banner-intersecting nav ul li:hover.submenu span:after {
+  .container.banner-intersecting nav > ul > li.submenu a:after, .container.banner-intersecting nav > ul > li.submenu span:after, .container.banner-intersecting nav > ul > li:hover.submenu a:after, .container.banner-intersecting nav > ul > li:hover.submenu span:after {
     border-color: var(--font-color-inverted);
   }
-  .container.banner-intersecting nav ul li:hover > a,
-.container.banner-intersecting nav ul li:hover > span {
+  .container.banner-intersecting nav > ul > li:hover > a,
+.container.banner-intersecting nav > ul > li:hover > span {
     outline: 1px solid var(--font-color-inverted);
     color: var(--font-color-inverted-hover);
   }
-  .container.banner-intersecting nav ul li:hover > a.primary,
-.container.banner-intersecting nav ul li:hover > span.primary {
+  .container.banner-intersecting nav > ul > li:hover > a.primary,
+.container.banner-intersecting nav > ul > li:hover > span.primary {
     outline: none;
     color: var(--font-color-inverted-hover);
     background: var(--green-lighter);
   }
-  .container.banner-intersecting nav ul li ul li a {
+  .container.banner-intersecting nav > ul > li ul li a {
     outline: none;
     color: var(--font-color);
   }
-  .container.banner-intersecting nav ul li ul li a:hover {
+  .container.banner-intersecting nav > ul > li ul li a:hover {
     outline: none;
     color: var(--font-color-inverted-hover);
     background: var(--green-lighter);
@@ -1216,7 +1274,7 @@ dialog ul.buttons_list li {
     box-shadow: 0 1px 2px 0 var(--shadow);
   }
   .container nav .title {
-    font-size: 18px;
+    font-size: 1.2em;
     line-height: 56px;
     display: block;
     text-transform: uppercase;
@@ -1253,72 +1311,72 @@ dialog ul.buttons_list li {
     padding: 0;
     list-style: none;
   }
-  .container nav ul {
+  .container nav > ul {
     text-align: right;
     margin-right: 36px;
   }
-  .container nav ul li {
+  .container nav > ul > li {
     display: inline-block;
     margin: 10px;
     /* submenu */
     position: relative;
   }
-  .container nav ul li a,
-.container nav ul li span {
+  .container nav > ul > li a,
+.container nav > ul > li span {
     text-transform: uppercase;
     display: inline-block;
     padding: 10px 16px;
     height: 36px;
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 1em;
+    line-height: 1em;
     color: var(--font-color);
     text-decoration: none;
     outline: 0px;
   }
-  .container nav ul li a:hover,
-.container nav ul li span:hover {
+  .container nav > ul > li a:hover,
+.container nav > ul > li span:hover {
     user-select: none;
     color: var(--font-color-hover);
     outline: 1px solid var(--font-color);
   }
-  .container nav ul li a.toggle,
-.container nav ul li span.toggle {
+  .container nav > ul > li a.toggle,
+.container nav > ul > li span.toggle {
     padding: 0;
   }
-  .container nav ul li a.primary,
-.container nav ul li span.primary {
+  .container nav > ul > li a.primary,
+.container nav > ul > li span.primary {
     background-color: var(--green);
     color: var(--font-color-inverted-hover);
     font-weight: 900;
   }
-  .container nav ul li a.primary:hover,
-.container nav ul li span.primary:hover {
+  .container nav > ul > li a.primary:hover,
+.container nav > ul > li span.primary:hover {
     background-color: var(--green-lighter);
     outline: none;
     color: var(--font-color-inverted-hover);
   }
-  .container nav ul li a:hover,
-.container nav ul li span:hover {
+  .container nav > ul > li a:hover,
+.container nav > ul > li span:hover {
     color: var(--font-color);
   }
-  .container nav ul li.current {
+  .container nav > ul > li.current {
     font-weight: 900;
   }
-  .container nav ul li ul {
+  .container nav > ul > li > ul {
     transition: opacity 0.3s ease-in-out;
     transform: scale(0);
-    display: block;
     opacity: 0;
+    display: block;
     position: absolute;
     z-index: 1;
     right: -24px;
-    background-color: var(--light);
+    background-color: var(--background);
     margin: 12px 0 0 0;
     padding: 16px 0;
     box-shadow: 0 1px 2px 0 var(--shadow);
   }
-  .container nav ul li ul:before {
-    border-bottom: solid 8px var(--light);
+  .container nav > ul > li > ul:before {
+    border-bottom: solid 8px var(--background);
     border-left: solid 8px transparent;
     border-right: solid 8px transparent;
     content: "";
@@ -1326,48 +1384,47 @@ dialog ul.buttons_list li {
     position: absolute;
     top: -6px;
   }
-  .container nav ul li ul:after {
+  .container nav > ul > li > ul:after {
     content: "";
-    width: 100%;
+    width: 150%;
     position: absolute;
-    height: 20px;
+    height: 125%;
     top: -18px;
-    left: 0;
+    left: -25%;
+    z-index: -10;
   }
-  .container nav ul li ul li {
+  .container nav > ul > li > ul li {
     margin: 0;
     display: block;
   }
-  .container nav ul li ul li:first-child a {
+  .container nav > ul > li > ul li:first-child a {
     border-top: 0px;
   }
-  .container nav ul li ul li a {
+  .container nav > ul > li > ul li a {
     padding: 10px 36px;
     width: 100%;
     height: auto;
     max-width: 200px;
-    font-size: 14px;
+    font-size: 0.95em;
     border-top: 1px solid var(--background);
-    background-color: var(--light);
     outline: none;
   }
-  .container nav ul li ul li a:hover {
+  .container nav > ul > li > ul li a:hover {
     outline: none;
     background-color: var(--green-lighter);
     color: var(--light);
   }
-  .container nav ul li:not(.closed):hover ul {
+  .container nav > ul > li:not(.closed):hover ul {
     display: block;
     opacity: 1;
     transform: scale(1);
   }
-  .container nav ul li:not(.closed):hover.submenu a:after, .container nav ul li:not(.closed):hover.submenu span:after {
+  .container nav > ul > li:not(.closed):hover.submenu a:after, .container nav > ul > li:not(.closed):hover.submenu span:after {
     transform: rotate(225deg);
     margin: 0 0 0px 8px;
-    border-color: var(--font-color-hover);
   }
-  .container nav ul li.submenu > a:after,
-.container nav ul li.submenu > span:after {
+  .container nav > ul > li.submenu > a:after,
+.container nav > ul > li.submenu > span:after {
     content: "";
     border: solid var(--font-color);
     border-width: 0 2px 2px 0;
@@ -1387,9 +1444,10 @@ dialog ul.buttons_list li {
 .toggle *,
 .toggle *:before,
 .toggle *:after {
-  font-size: 12px;
+  font-size: 0.9em;
 }
 .toggle input[type=checkbox] {
+  margin: 0;
   position: absolute;
   left: 0;
   top: 0;
