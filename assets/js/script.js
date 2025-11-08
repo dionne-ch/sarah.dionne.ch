@@ -41,9 +41,30 @@ const throttle = (func, wait, options) => {
   };
   return throttled;
 };
+const convertDate = (event) => {
+  // Prevent the form from submitting
+  event.preventDefault();
 
+  // Get the date value from the input field
+  const dateInput = document.getElementById("date");
+  const dateValue = dateInput.value;
+
+  // Convert the date to the desired format (YYYY-MM-DD)
+  const dateParts = dateValue.split("-");
+  const year = dateParts[0];
+  const month = dateParts[1];
+  const day = dateParts[2];
+  const formattedDate = `${day}.${month}.${year}`;
+
+  // Set the value of the hidden input field with the formatted date
+  const formattedDateInput = document.getElementById("00N0900000K6W6s");
+  formattedDateInput.value = formattedDate;
+
+  // Submit the form
+  event.target.submit();
+};
 const trackEvent = (event, ...options) => {
-  console.log(`Track event: ${event}`, ...options);
+  //console.log(`Track event: ${event}`, ...options);
   if (typeof mixpanel === "object") {
     mixpanel.track(event, ...options);
   }
@@ -97,7 +118,7 @@ const togglerClickedHandler = (checked) => {
 // Animate the desktop navbar
 const parallax = () => {
   const pos = window.scrollY,
-    banner = document.querySelector("#banner");
+    banner = document.querySelector("#banner.parallax");
 
   // Don't calculate if the banner isn't above the fold
   if (!!banner && pos <= banner.offsetHeight) {
@@ -154,8 +175,35 @@ const initObserveElements = () => {
         const dataset = entry.target.dataset;
         for (const record in dataset) {
           if (dataset[record]) {
-            entry.target.setAttribute(record, dataset[record]);
-            entry.target.removeAttribute(`data-${record}`);
+            if (record == "hover") {
+              var initialSrc = entry.target.src;
+              entry.target.setAttribute("src", dataset[record]);
+              setTimeout(() => {
+                var timeoutID = undefined;
+                entry.target.setAttribute("src", initialSrc);
+                ["click", "mouseenter"].forEach((evt) =>
+                  entry.target.addEventListener(
+                    evt,
+                    () => {
+                      clearTimeout(timeoutID);
+                      entry.target.setAttribute("src", dataset[record]);
+                      timeoutID = setTimeout(
+                        () => entry.target.setAttribute("src", initialSrc),
+                        2000
+                      );
+                    },
+                    false
+                  )
+                );
+                entry.target.addEventListener("mouseleave", () => {
+                  entry.target.setAttribute("src", initialSrc);
+                  clearTimeout(timeoutID);
+                });
+              }, 2000);
+            } else {
+              entry.target.setAttribute(record, dataset[record]);
+              entry.target.removeAttribute(`data-${record}`);
+            }
           }
         }
         observablesObserver.unobserve(entry.target);
@@ -188,7 +236,7 @@ const initNavPosition = () => {
 };
 
 const initMaps = () => {
-  document.querySelectorAll("div.map").forEach((item) => {
+  document.querySelectorAll("div.map-iframe").forEach((item) => {
     const iframe = item.querySelector("iframe");
     item.addEventListener("click", () => {
       item.classList.add("interact");
@@ -279,6 +327,74 @@ const initLinksClicked = () => {
       )
     );
 };
+const initForm = () => {
+  document
+    .querySelectorAll(
+      "input[type='text'], input[type='email'], input[type='tel'], input[type='date'], textarea"
+    )
+    .forEach((input) => {
+      input.setAttribute("value", "");
+      input.addEventListener("change", (e) =>
+        input.setAttribute("value", e.target.value)
+      );
+    });
+  const curYear = new Date().getFullYear();
+  var min = 1966,
+    max = curYear,
+    select = document.getElementById("00N0900000K6W72");
+
+  if (!!select) {
+    for (var i = min; i <= max; i++) {
+      var opt = document.createElement("option");
+      opt.value = i;
+      opt.innerHTML = i;
+      select.appendChild(opt);
+    }
+
+    select.value = new Date().getFullYear();
+  }
+};
+
+const locationHandler = () => {
+  var location = window.location.hash.replace("#", "");
+  // if the path length is 0, set it to primary page route
+  if (location.length == 0) {
+    location = "/";
+  }
+  // get the route object from the routes object
+  if (location === "form") {
+    document.getElementById("banner").style.display = "none";
+    const sections = document.querySelectorAll(".sections section");
+
+    sections.forEach((section) => {
+      if (section.id !== "form") {
+        section.style.display = "none";
+      } else {
+        section.style.display = "block";
+      }
+    });
+  } else {
+    if (location === "form_sent") {
+      document.getElementById("form_sent").showModal();
+    }
+    // display everything instead of the form
+    document.getElementById("banner").style.display = "block";
+    const sections = document.querySelectorAll(".sections section");
+    sections.forEach((section) => {
+      if (section.id !== "form") {
+        section.style.display = "block";
+      } else {
+        section.style.display = "none";
+      }
+    });
+  }
+};
+const initRouting = () => {
+  // create a function that watches the hash and calls the urlLocationHandler
+  window.addEventListener("hashchange", locationHandler);
+  // call the urlLocationHandler to load the page
+  locationHandler();
+};
 
 const init = () => {
   initFirstScrollListener();
@@ -291,6 +407,8 @@ const init = () => {
   initNavPosition();
   initCloseSubNav();
   initParallax();
+  initForm();
+  initRouting();
   initMaps();
 };
 
