@@ -35,10 +35,15 @@
   --deep-blue: rgb(var(--deep-blue-rgb));
 
   --blue-rgb: 24, 90, 157;
-  --blue: rgb(24, 90, 157);
+  --blue: rgb(var(--blue-rgb));
+
+  --orange-rgb: 245, 173, 61;
+  --orange: rgb(var(--orange-rgb));
 
   --background-light: color-mix(in srgb, var(--light), #000 5%);
   --background-dark: var(--dark-95);
+  --borders-light: var(--dark-15);
+  --borders-dark: var(--light-15);
   --font-color-inverted: var(--light-75);
   --font-color-inverted-hover: var(--light-85);
 
@@ -52,7 +57,7 @@
     var(--light),
     color-mix(in srgb, var(--dark), var(--light) 5%)
   );
-  --borders: light-dark(var(--dark-15), var(--light-15));
+  --borders: light-dark(var(--borders-light), var(--borders-dark));
   --shadow: light-dark(var(--dark-25), rgba(0, 0, 0, 0.5));
   --overlay: light-dark(var(--dark-25), var(--dark-50));
   --gradient: linear-gradient(33deg, var(--green), var(--blue));
@@ -64,6 +69,8 @@
 
   --font-size: 16px;
   --font-size-mobile: calc(var(--font-size) * 0.95);
+  --header-border-width: 2px;
+  --h1-font-size: 2.5em;
 
   --gutter: 24px;
 }
@@ -77,6 +84,9 @@
   --nav-bg: light-dark(var(--light-75), var(--dark-75));
 
   --font-color-inverted: var(--light);
+
+  --header-border-width: 0px;
+  --h1-font-size: 2em;
 }
 
 /* ==================
@@ -275,6 +285,20 @@ body {
     margin-top: 24px;
     margin-bottom: 24px;
   }
+  ul.prices {
+    li {
+      max-width: 250px;
+      display: flex;
+      justify-content: space-between;
+      span.price {
+        font-weight: 400;
+        text-align: right;
+      }
+    }
+    &.wide li {
+      max-width: 500px;
+    }
+  }
   ul.buttons_list {
     margin: 0;
     padding: 0;
@@ -466,6 +490,9 @@ body {
   svg title {
     display: none;
   }
+  svg.icon.highlight {
+    color: var(--orange);
+  }
   svg.sncl_logo {
     height: 36px;
     width: 84px;
@@ -640,6 +667,65 @@ body {
   }
 }
 
+/* SNCL SLIDER */
+$slide-images: (
+  "sncl_1966.jpg",
+  "sncl_wakesurf.jpg",
+  "sncl_wakeboard.jpg",
+  "sncl_group.jpg",
+  "sncl_sunset.jpg"
+);
+
+:root {
+  $img-path: "//ik.imagekit.io/sncl/tr:w-360,h-600,c-at_least,f-webp/header/";
+  @for $i from 1 through length($slide-images) {
+    $slide-image: nth($slide-images, $i);
+    --slide-#{$i}: url("#{$img-path}#{$slide-image}");
+  }
+}
+
+@for $i from 1 through length($breakpoints) {
+  $name: nth(map_keys($breakpoints), $i);
+  $breakpoint: nth(map_values($breakpoints), $i);
+  $slide-width: $breakpoint;
+  @if $i + 1 <= length($breakpoints) {
+    $slide-width: nth(map_values($breakpoints), $i + 1);
+  }
+
+  @include grid_media_query($name) {
+    :root {
+      $img-path: "//ik.imagekit.io/sncl/tr:w-#{$slide-width},h-600,c-at_least,f-webp/header/";
+      @for $i from 1 through length($slide-images) {
+        $slide-image: nth($slide-images, $i);
+        --slide-#{$i}: url("#{$img-path}#{$slide-image}");
+      }
+    }
+  }
+}
+
+@keyframes imageSlider {
+  @for $i from 0 through length($slide-images)-1 {
+    $slide-num: $i + 1;
+    $next-num: 1;
+    @if $i + 2 <= length($slide-images) {
+      $next-num: $i + 2;
+    }
+    $duration: 100 / length($slide-images);
+    $from: $i * $duration;
+    $to: ($i + 1) * $duration - 5;
+
+    #{$from}% {
+      background-image: var(--slide-#{$slide-num});
+    }
+    #{$to}% {
+      background-image: var(--slide-#{$slide-num}), var(--slide-#{$next-num});
+    }
+  }
+  100% {
+    background-image: var(--slide-1);
+  }
+}
+
 /* PAGE LAYOUT */
 .container {
   input#toggler {
@@ -656,6 +742,85 @@ body {
       width: 100%;
 
       #banner {
+        &.full-height {
+          // full height minus header
+          height: calc(100vh - 56px);
+          margin-top: 56px;
+        }
+        /* Parallax Banner */
+        &.parallax {
+          background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/hero/full.jpg");
+          .bg,
+          .mg,
+          .fg {
+            transition: transform 1s ease-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-attachment: inherit;
+            background-size: cover;
+          }
+          .bg {
+            background-position: center;
+            background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/hero/background.jpg");
+            @include grid-media-query(m) {
+              background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-1200,fo-auto,f-webp/hero/background.jpg");
+            }
+          }
+          .mg {
+            background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/hero/middleground.png");
+            @include grid-media-query(m) {
+              background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-1200,fo-auto,f-webp/hero/middleground.png");
+            }
+          }
+          .fg {
+            background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/hero/foreground.png");
+            @include grid-media-query(m) {
+              background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-1200,fo-auto,f-webp/hero/foreground.png");
+            }
+          }
+        }
+        /* Slider banner */
+        &.slider {
+          background-image: var(--slide-1);
+          perspective: 1px;
+          animation: imageSlider 30s linear infinite 0s;
+          background-position: center;
+          &.running {
+            animation-play-state: running;
+          }
+          &.paused
+          //, &:hover {
+          {
+            animation-play-state: paused;
+            &:after {
+              opacity: 0.01;
+            }
+            .inner {
+              opacity: 0.01;
+            }
+          }
+          &:after {
+            transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            content: "";
+            background: linear-gradient(
+              rgba(var(--dark-rgb), 0.275),
+              rgba(var(--dark-rgb), 0.3)
+            );
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 1;
+          }
+        }
+
         width: 100%;
         max-width: 100%;
         max-height: 100vh;
@@ -678,43 +843,11 @@ body {
         background-repeat: no-repeat;
         background-attachment: inherit;
         background-size: cover;
-        background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-30,fo-auto,f-webp/hero/full.jpg");
+
         perspective: 1px;
-        .bg,
-        .mg,
-        .fg {
-          transition: transform 1s ease-out;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-position: bottom;
-          background-repeat: no-repeat;
-          background-attachment: inherit;
-          background-size: cover;
-        }
-        .bg {
-          background-position: center;
-          background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/hero/background.jpg");
-          @include grid-media-query(m) {
-            background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-1200,fo-auto,f-webp/hero/background.jpg");
-          }
-        }
-        .mg {
-          background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/hero/middleground.png");
-          @include grid-media-query(m) {
-            background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-1200,fo-auto,f-webp/hero/middleground.png");
-          }
-        }
-        .fg {
-          background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-720,fo-auto,f-webp/hero/foreground.png");
-          @include grid-media-query(m) {
-            background-image: url("https://ik.imagekit.io/sarahdionne/tr:w-1200,fo-auto,f-webp/hero/foreground.png");
-          }
-        }
 
         .inner {
+          z-index: 2;
           filter: drop-shadow(0px 0px 5px var(--deep-blue));
           margin: auto;
           position: absolute;
@@ -736,9 +869,10 @@ body {
           vertical-align: middle;
 
           header {
+            position: relative;
             display: inline-block;
-            border-bottom: solid 2px;
-            border-top: solid 2px;
+            border-bottom: solid var(--header-border-width);
+            border-top: solid var(--header-border-width);
             margin: 36px 0;
             @include grid-media-query(s) {
               margin-top: 12px;
@@ -746,18 +880,34 @@ body {
             padding: 3px 0;
 
             h1 {
-              border-bottom: solid 2px;
-              border-top: solid 2px;
-              font-size: 2.5em;
+              border-bottom: solid var(--header-border-width);
+              border-top: solid var(--header-border-width);
+              font-size: var(--h1-font-size);
               font-weight: 900;
               letter-spacing: 0.2em;
               margin: 0;
               padding-left: 0.05em;
               position: relative;
-              text-transform: uppercase;
               a {
                 text-decoration: none;
                 color: var(--font-color-inverted-hover);
+
+                &:after {
+                  // Add the arrow to scroll to content
+                  display: block;
+                  position: fixed;
+                  font-size: 1em;
+                  font-weight: 400;
+                  bottom: -100px;
+                  left: 50%;
+                  width: 1em;
+                  content: "↓";
+                  margin-left: -0.5em;
+                  cursor: pointer;
+                  &:hover {
+                    color: var(--light);
+                  }
+                }
               }
               span {
                 font-weight: 300;
@@ -1027,16 +1177,17 @@ body {
     }
 
     /* Mobile top header */
-    &:not(.sncl).banner-intersecting {
+    // on top of page stays not fixed
+    &.banner-intersecting {
       .wrapper .mobile-navbar {
         position: absolute;
         background: none;
         backdrop-filter: none;
         box-shadow: none;
-        .title {
+        .title.hide-on-top {
           display: none;
         }
-        label.toggler {
+        label.toggler.inverted {
           .navicon {
             background: var(--font-color-inverted-hover);
             &,
@@ -1172,8 +1323,55 @@ body {
 /* Desktop menu */
 @include grid-media-query(m) {
   .container {
-    // ON TOP OF PAGE
-    &:not(.sncl).banner-intersecting {
+    // ON TOP OF PAGE Stays not fixed
+    &.banner-intersecting {
+      nav {
+        top: 0;
+        position: absolute;
+        display: block;
+        background: none;
+        backdrop-filter: none;
+        box-shadow: none;
+
+        &.inverted-top {
+          .title svg.icon {
+            color: var(--font-color-inverted);
+          }
+          .title a {
+            color: var(--font-color-inverted);
+          }
+          > ul {
+            > li {
+              > a,
+              > span {
+                color: var(--font-color-inverted);
+                &:hover {
+                  background-color: transparent;
+                  color: var(--font-color-inverted-hover);
+                }
+                &.primary {
+                  color: var(--font-color-inverted-hover);
+                }
+              }
+              &,
+              &:hover {
+                &.submenu a:after,
+                &.submenu span:after {
+                  border-color: var(--font-color-inverted);
+                }
+              }
+              &:hover {
+                > a,
+                > span {
+                  outline: 1px solid var(--borders-dark);
+                  color: var(--font-color-inverted-hover);
+                }
+              }
+            }
+          }
+        }
+      }
+      // add an overlay under the transparent navbar
       #banner {
         position: relative;
         &:after {
@@ -1190,67 +1388,6 @@ body {
             rgba(var(--deep-blue-rgb), 0.1) 60%,
             transparent 90%
           );
-        }
-      }
-      nav {
-        top: 0;
-        position: absolute;
-        display: block;
-        background: none;
-        backdrop-filter: none;
-        box-shadow: none;
-        //overflow: hidden;
-        .title svg.icon {
-          color: var(--font-color-inverted);
-        }
-        .title a {
-          color: var(--font-color-inverted);
-        }
-        > ul {
-          text-align: right;
-          > li {
-            > a,
-            > span {
-              color: var(--font-color-inverted);
-              outline: 0px solid var(--font-color-inverted);
-              &:hover {
-                background-color: transparent;
-                outline: 1px solid var(--font-color-inverted);
-                color: var(--font-color-inverted-hover);
-              }
-              &.primary {
-                color: var(--font-color-inverted-hover);
-              }
-            }
-            &,
-            &:hover {
-              &.submenu a:after,
-              &.submenu span:after {
-                border-color: var(--font-color-inverted);
-              }
-            }
-            &:hover {
-              > a,
-              > span {
-                outline: 1px solid var(--font-color-inverted);
-                color: var(--font-color-inverted-hover);
-                &.primary {
-                  outline: none;
-                  color: var(--font-color-inverted-hover);
-                  background: var(--green-lighter);
-                }
-              }
-            }
-            ul li a {
-              outline: none;
-              color: var(--font-color);
-              &:hover {
-                outline: none;
-                color: var(--font-color-inverted-hover);
-                background: var(--green-lighter);
-              }
-            }
-          }
         }
       }
     }
@@ -1421,7 +1558,7 @@ body {
           &:hover {
             & > a,
             & > span {
-              outline: 1px solid var(--font-color);
+              outline: 1px solid var(--borders);
             }
 
             &:not(.closed) {

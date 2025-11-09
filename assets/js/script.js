@@ -361,6 +361,7 @@ const locationHandler = () => {
   if (location.length == 0) {
     location = "/";
   }
+  //console.log(location);
   // get the route object from the routes object
   if (location === "form") {
     document.getElementById("banner").style.display = "none";
@@ -377,10 +378,11 @@ const locationHandler = () => {
     if (location === "form_sent") {
       document.getElementById("form_sent").showModal();
     }
-    // display everything instead of the form
     document.getElementById("banner").style.display = "block";
     const sections = document.querySelectorAll(".sections section");
+    //console.log(sections);
     sections.forEach((section) => {
+      //console.log(section.id);
       if (section.id !== "form") {
         section.style.display = "block";
       } else {
