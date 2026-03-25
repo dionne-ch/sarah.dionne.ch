@@ -631,6 +631,9 @@ body .uppercase {
 body .hidden {
   display: none !important;
 }
+body .margin-top {
+  margin-top: var(--gutter);
+}
 body .col--text-around-img {
   padding: 0;
 }
@@ -1197,6 +1200,9 @@ body div.map-iframe.interact:before, body div.map-iframe.interact:after {
 .container .wrapper .content .sections section {
   margin-top: 1px;
   padding: 48px 12px;
+}
+.container .wrapper .content .sections section ul {
+  overflow: auto;
 }
 @media only screen and (min-width: 480px) {
   .container .wrapper .content .sections section {
